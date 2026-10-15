@@ -2,7 +2,11 @@
 
 tidemail 是一个轻量的临时邮箱服务，基于 Cloudflare Workers 和 D1。它支持从配置的域名创建临时邮箱、接收和查看邮件，也可以按需启用发信。
 
+本项目基于 [Vmail](https://github.com/oiov/vmail) 精简改版，聚焦临时邮箱创建、收件与管理。
+
 [English](README_en.md) · [Cloudflare 部署教程](docs/github-action-tutorial.md)
+
+![TideMail 项目预览](social-preview.png)
 
 ## 功能
 

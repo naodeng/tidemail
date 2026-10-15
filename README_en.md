@@ -2,7 +2,11 @@
 
 tidemail is a lightweight temporary email service built with Cloudflare Workers and D1. Create temporary addresses on configured domains, receive and manage messages, and enable outbound email when needed.
 
+TideMail is a streamlined redesign based on [Vmail](https://github.com/oiov/vmail), focused on creating and managing temporary email addresses.
+
 [简体中文](README.md) · [Cloudflare deployment guide](docs/github-action-tutorial.md)
+
+![TideMail project preview](social-preview.png)
 
 ## Features
 
