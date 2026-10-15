@@ -129,5 +129,9 @@
   "Addresses Created": "생성된 주소",
   "Emails Received": "받은 이메일",
   "API Keys Created": "생성된 API 키",
-  "API Calls": "API 호출"
+  "API Calls": "API 호출",
+  "Refresh": "새로고침",
+  "Copy failed": "복사 실패",
+  "Copy to clipboard": "클립보드에 복사",
+  "Open navigation menu": "탐색 메뉴 열기"
 }

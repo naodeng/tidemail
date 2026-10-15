@@ -129,5 +129,9 @@
   "Addresses Created": "Созданных адресов",
   "Emails Received": "Полученных писем",
   "API Keys Created": "Созданных ключей API",
-  "API Calls": "Вызовов API"
+  "API Calls": "Вызовов API",
+  "Refresh": "Обновить",
+  "Copy failed": "Не удалось скопировать",
+  "Copy to clipboard": "Копировать в буфер обмена",
+  "Open navigation menu": "Открыть меню навигации"
 }

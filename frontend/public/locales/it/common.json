@@ -129,5 +129,9 @@
   "Addresses Created": "Indirizzi creati",
   "Emails Received": "Email ricevute",
   "API Keys Created": "Chiavi API create",
-  "API Calls": "Chiamate API"
+  "API Calls": "Chiamate API",
+  "Refresh": "Aggiorna",
+  "Copy failed": "Copia non riuscita",
+  "Copy to clipboard": "Copia negli appunti",
+  "Open navigation menu": "Apri il menu di navigazione"
 }

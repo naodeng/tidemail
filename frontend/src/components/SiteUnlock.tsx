@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useState } from "react";
+import { Button, Card, Input } from "animal-island-ui";
+import { LockIcon } from "naive-icons";
+import { useTranslation } from "react-i18next";
 
 interface SiteUnlockProps {
   onUnlock: (password: string) => Promise<void>;
@@ -9,43 +11,40 @@ interface SiteUnlockProps {
 
 export function SiteUnlock({ onUnlock, isUnlocking, error }: SiteUnlockProps) {
   const { t } = useTranslation();
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!password.trim()) {
-      return;
-    }
-    await onUnlock(password);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (password.trim()) await onUnlock(password);
   };
 
   return (
-    <div className="min-h-screen bg-[#1f2023] flex items-center justify-center px-6">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md rounded-xl border border-cyan-100/20 bg-neutral-800 p-6 text-white">
-        <h1 className="text-xl font-semibold mb-3">{t('Site locked')}</h1>
-        <p className="text-sm text-zinc-300 mb-5">
-          {t('Enter site password to continue')}
-        </p>
-
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder={t('Password')}
-          className="w-full rounded-md bg-white/10 border border-cyan-100/20 px-3 py-2 mb-4 outline-none focus:ring-2 focus:ring-cyan-500"
-        />
-
-        {error && <p className="text-sm text-rose-400 mb-3">{error}</p>}
-
-        <button
-          type="submit"
-          disabled={isUnlocking || !password.trim()}
-          className="w-full rounded-md bg-cyan-600 py-2.5 font-medium hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed">
-          {isUnlocking ? t('Unlocking...') : t('Unlock')}
-        </button>
-      </form>
-    </div>
+    <main className="app-loading">
+      <Card className="site-unlock-card">
+        <h1>{t("Site locked")}</h1>
+        <p>{t("Enter site password to continue")}</p>
+        <form onSubmit={handleSubmit}>
+          <Input
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder={t("Password")}
+            prefix={<LockIcon aria-hidden="true" />}
+            aria-label={t("Password")}
+          />
+          {error && <p role="alert">{error}</p>}
+          <Button
+            type="primary"
+            block
+            htmlType="submit"
+            disabled={isUnlocking || !password.trim()}
+            loading={isUnlocking}
+          >
+            {isUnlocking ? t("Unlocking...") : t("Unlock")}
+          </Button>
+        </form>
+      </Card>
+    </main>
   );
 }

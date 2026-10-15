@@ -23,7 +23,6 @@
   "INBOX": "INBOX",
   "Waiting for emails...": "Waiting for emails...",
   "Try it": "Try it",
-  "Vmail can now send emails!": "Vmail can now send emails!",
   "Forward only, no storage": "Unlimited, Forward only, no storage",
   "Sending email *": "Sending email *",
   "Sending name": "Sending name",
@@ -133,5 +132,9 @@
   "Addresses Created": "Addresses Created",
   "Emails Received": "Emails Received",
   "API Keys Created": "API Keys Created",
-  "API Calls": "API Calls"
+  "API Calls": "API Calls",
+  "Refresh": "Refresh",
+  "Copy failed": "Copy failed",
+  "Copy to clipboard": "Copy to clipboard",
+  "Open navigation menu": "Open navigation menu"
 }

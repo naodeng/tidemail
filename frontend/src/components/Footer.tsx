@@ -1,72 +1,47 @@
 import { Link } from "react-router-dom";
-import Twitter from "./icons/Twitter.tsx";
-import GitHub from "./icons/GitHub.tsx";
-import MailIcon from "./icons/MailIcon.tsx";
-import WrdoLogo from "./icons/Wrdo.tsx";
+import { MailIcon } from "naive-icons";
 
-/**
- * 网站的页脚组件
- */
 export function Footer() {
   return (
-    <div className="text-white w-full mt-auto flex flex-col items-center justify-between px-5 pt-16 mb-10 md:px-10 mx-auto sm:flex-row">
-      <Link to="/" className="text-xl font-black leading-none select-none logo">
-        EMAIL.NAODENG.COM.CN
-      </Link>{" "}
-      <p className="mt-4 text-sm text-gray-400 sm:ml-4 sm:pl-4 sm:border-l sm:border-gray-200 sm:mt-0">
-        © 2024 Products of{" "}
-        <a
-          className="font-semibold underline hover:text-gray-600"
-          href="https://email.naodeng.com.cn/"
-          target="_blank"
-          rel="noopener noreferrer">
-          naodeng.com.cn
+    <footer className="site-footer">
+      <div>
+        <Link to="/" className="site-brand">
+          TideMail
+        </Link>
+        <p>
+          © {new Date().getFullYear()} Products of{" "}
+          <a href="https://naodeng.com.cn/" target="_blank" rel="noreferrer">
+            naodeng.com.cn
+          </a>
+        </p>
+      </div>
+
+      <nav className="site-footer__links" aria-label="Social links">
+        <a href="https://like.do" target="_blank" rel="noreferrer">
+          <img src="/likedo.svg" width="24" height="24" alt="LikeDo" />
         </a>
-        .
-      </p>
-      <div className="inline-flex justify-center mt-4 space-x-5 sm:ml-auto sm:mt-0 sm:justify-start">
-        {/* 社交媒体和联系方式链接 */}
-        <a
-          href="https://like.do"
-          target="_blank"
-          title="LikeDo"
-          className="text-gray-400 hover:text-gray-500  scale-[1.2]">
-          <img src="/likedo.svg" alt="LikeDo" className="w-6 h-6" />
-        </a>
-        <a
-          href="https://attachready.com"
-          target="_blank"
-          title="AttachReady"
-          className="text-gray-400 hover:text-gray-500  scale-[1.1]">
+        <a href="https://attachready.com" target="_blank" rel="noreferrer">
           <img
             src="/attachready.png"
+            width="24"
+            height="24"
             alt="AttachReady"
-            className="w-6 h-6 rounded-full"
           />
         </a>
-        <a
-          href="mailto:qa@naodeng.com.cn"
-          title="Email"
-          className="text-gray-400 hover:text-gray-500">
-          <MailIcon className="w-6 h-6" />
+        <a href="mailto:qa@naodeng.com.cn" aria-label="Email">
+          <MailIcon size={22} aria-hidden="true" />
         </a>
-        <a
-          href="https://twitter.com/inaodeng"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Twitter"
-          className="text-gray-400 hover:text-gray-500">
-          <Twitter />
+        <a href="https://twitter.com/inaodeng" target="_blank" rel="noreferrer">
+          Twitter
         </a>
         <a
           href="https://github.com/naodeng/vmail"
           target="_blank"
-          rel="noopener noreferrer"
-          title="Github"
-          className="text-gray-400 hover:text-gray-500">
-          <GitHub />
+          rel="noreferrer"
+        >
+          GitHub
         </a>
-      </div>
-    </div>
+      </nav>
+    </footer>
   );
 }

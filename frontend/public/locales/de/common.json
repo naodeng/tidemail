@@ -130,5 +130,9 @@
   "Addresses Created": "Erstellte Adressen",
   "Emails Received": "Empfangene E-Mails",
   "API Keys Created": "Erstellte API-Schlüssel",
-  "API Calls": "API-Aufrufe"
+  "API Calls": "API-Aufrufe",
+  "Refresh": "Aktualisieren",
+  "Copy failed": "Kopieren fehlgeschlagen",
+  "Copy to clipboard": "In die Zwischenablage kopieren",
+  "Open navigation menu": "Navigationsmenü öffnen"
 }

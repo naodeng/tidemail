@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://trendshift.io/repositories/8681" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8681" alt="yesmore%2Fvmail | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-  <h1>𝐕𝐌𝐀𝐈𝐋.𝐃𝐄𝐕</h1>
+  <h1>TideMail</h1>
   <p><a href="/docs/github-action-tutorial.md">部署教程</a>  ·  <a href="/docs/ai-deploy.md">AI帮你部署</a>  ·
   <a href="https://vmail.dev/api-docs" target="_blank">API 文档</a> · <a href="https://github.com/oiov/vmail/blob/main/README_en.md">English</a> | 简体中文</p>
   <p>使用 Cloudflare Email Worker 实现的临时电子邮件服务</p>
@@ -35,7 +35,7 @@
 
 ### 自动部署 (推荐)
 
-本项目已包含一个预先配置好的 GitHub Action 工作流，可以帮助您自动将 Vmail 应用部署到 Cloudflare。
+本项目已包含一个预先配置好的 GitHub Action 工作流，可以帮助您自动将 TideMail 应用部署到 Cloudflare。
 
 详细步骤请参考 [GitHub Action 自动部署教程](/docs/github-action-tutorial.md)。
 
@@ -118,7 +118,7 @@ pnpm exec wrangler secret put MAILCHANNELS_API_KEY # MailChannels 时
 
 ## 📖 API 文档
 
-Vmail 提供完整的 RESTful API，支持通过程序化方式创建临时邮箱、查询收件箱。
+TideMail 提供完整的 RESTful API，支持通过程序化方式创建临时邮箱、查询收件箱。
 
 ### 获取 API Key
 

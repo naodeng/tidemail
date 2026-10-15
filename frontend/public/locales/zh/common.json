@@ -22,7 +22,6 @@
   "Privacy": "隐私",
   "INBOX": "INBOX",
   "Waiting for emails...": "准备接收邮件...",
-  "Vmail sender is beta now. ": "Vmail 发信公测中，",
   "Try it": "试试匿名发件",
   "Forward only, no storage": "无限制，仅转发，不存储",
   "Sending email *": "发送电子邮件 *",
@@ -133,5 +132,9 @@
   "Addresses Created": "累计创建邮址",
   "Emails Received": "累计接收邮件",
   "API Keys Created": "累计创建 API Key",
-  "API Calls": "累计 API 调用"
+  "API Calls": "累计 API 调用",
+  "Refresh": "刷新",
+  "Copy failed": "复制失败",
+  "Copy to clipboard": "复制到剪贴板",
+  "Open navigation menu": "打开导航菜单"
 }

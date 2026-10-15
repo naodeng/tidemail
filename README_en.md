@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>𝐕𝐌𝐀𝐈𝐋.𝐃𝐄𝐕</h1>
+  <h1>TideMail</h1>
   <p><a href="https://discord.gg/d68kWCBDEs">Discord</a> · English | <a href="/README.md">简体中文</a></p>
   <p>Temporary email service build with email worker.</p>
   </div>
@@ -22,7 +22,7 @@ Principles：
 
 ## 📖 API Documentation
 
-Vmail provides a complete RESTful API for programmatic access to create temporary mailboxes and query inboxes.
+TideMail provides a complete RESTful API for programmatic access to create temporary mailboxes and query inboxes.
 
 ### Get API Key
 
@@ -70,7 +70,7 @@ This project is based on Cloudflare Workers and Cloudflare D1. All you need is a
 
 ### Automatic Deployment (Recommended)
 
-This project includes a pre-configured GitHub Action workflow to help you automatically deploy the Vmail application to Cloudflare.
+This project includes a pre-configured GitHub Action workflow to help you automatically deploy the TideMail application to Cloudflare.
 
 For detailed steps, please refer to the [GitHub Action Auto-Deployment Tutorial](/docs/github-action-tutorial.md).
 

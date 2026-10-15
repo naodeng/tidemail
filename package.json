@@ -1,10 +1,10 @@
 {
-  "name": "vmail",
+  "name": "tidemail",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.1.0",
-  "description": "使用 Cloudflare email worker 实现的临时电子邮件服务",
+  "description": "TideMail is a lightweight temporary email service built with Cloudflare Workers.",
   "scripts": {
     "build": "pnpm --filter frontend run build",
     "test": "node --test worker/src/*.test.ts",
@@ -16,7 +16,7 @@
     "format": "prettier --write ."
   },
   "keywords": [
-    "vmail",
+    "tidemail",
     "temp-email",
     "cloudflare-worker"
   ],

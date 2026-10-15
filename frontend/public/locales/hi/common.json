@@ -129,5 +129,9 @@
   "Addresses Created": "बनाए गए पते",
   "Emails Received": "प्राप्त ईमेल",
   "API Keys Created": "बनाई गई API कुंजियाँ",
-  "API Calls": "API कॉल"
+  "API Calls": "API कॉल",
+  "Refresh": "रीफ़्रेश करें",
+  "Copy failed": "कॉपी विफल हुई",
+  "Copy to clipboard": "क्लिपबोर्ड पर कॉपी करें",
+  "Open navigation menu": "नेविगेशन मेनू खोलें"
 }

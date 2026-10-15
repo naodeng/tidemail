@@ -221,7 +221,7 @@ export function appendSenderAttribution(message: OutgoingEmail): string {
 }
 
 export function getProviderSenderName(message: OutgoingEmail): string {
-  return message.senderName ? `${message.senderName} via Vmail` : "Vmail";
+  return message.senderName ? `${message.senderName} via TideMail` : "TideMail";
 }
 
 export function buildResendPayload(

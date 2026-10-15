@@ -5,7 +5,7 @@ export function About() {
     <div>
       <div className="max-w-[1400px] ">
         <p className="mt-8">
-          <strong>Vmail.DEV </strong> is a Virtual temporary email service.{" "}
+          <strong>TideMail </strong> is a Virtual temporary email service.{" "}
         </p>
         <p className="mt-4">
           You can get a temporary email without revealing any personal
@@ -31,7 +31,7 @@ export function About() {
           <a href="#copyrights">Copyrights </a>
         </h2>
         <p className="mt-4">
-          All copyrights belong to{" "}
+          All copyrights belong to Vmail.DEV{" "}
           <a href="https://vmail.dev" rel="nofollow">
             <strong>Vmail.DEV </strong>{" "}
           </a>

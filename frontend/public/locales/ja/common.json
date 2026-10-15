@@ -129,5 +129,9 @@
   "Addresses Created": "作成されたアドレス",
   "Emails Received": "受信したメール",
   "API Keys Created": "作成されたAPIキー",
-  "API Calls": "API呼び出し"
+  "API Calls": "API呼び出し",
+  "Refresh": "更新",
+  "Copy failed": "コピーに失敗しました",
+  "Copy to clipboard": "クリップボードにコピー",
+  "Open navigation menu": "ナビゲーションメニューを開く"
 }

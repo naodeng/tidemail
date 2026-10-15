@@ -1,36 +1,46 @@
 import { useTranslation } from "react-i18next";
 import { formatDistanceToNow, type Locale } from "date-fns";
-import { zhCN, enUS, fr, ja, de, ko, zhTW, it, pt, tr, ru } from "date-fns/locale";
-import clsx from "clsx";
-// refactor: 将导入从 'database' 包更改为本地的类型定义文件
+import {
+  zhCN,
+  enUS,
+  fr,
+  ja,
+  de,
+  ko,
+  zhTW,
+  it,
+  pt,
+  tr,
+  ru,
+} from "date-fns/locale";
+import { Badge, Button, Card, Checkbox, Skeleton } from "animal-island-ui";
+import {
+  ArrowLeftIcon,
+  InboxIcon,
+  KeyIcon,
+  MailIcon,
+  MaximizeIcon,
+  RefreshIcon,
+  SendIcon,
+  TrashIcon,
+} from "naive-icons";
+import type { Dispatch, SetStateAction } from "react";
 import type { Email } from "../database_types";
+import { SiteStats } from "./SiteStats";
+import { MailDetail } from "../pages/MailDetail";
 
-// 图标导入
-import MailIcon from "./icons/MailIcon.tsx";
-import RefreshIcon from "./icons/RefreshIcon.tsx";
-import Loader from "./icons/Loader.tsx";
-import { TrashIcon } from "./icons/TrashIcon.tsx";
-import PasswordIcon from "./icons/Password.tsx"; // feat: 导入密码图标
-// feat: 导入新组件
-import { MailDetail } from "../pages/MailDetail.tsx";
-import ArrowUturnLeft from "./icons/ArrowUturnLeft.tsx";
-import Expand from "./icons/Expand.tsx"; // feat: 导入 Expand 图标
-import { SiteStats } from "./SiteStats.tsx"; // feat: 导入 SiteStats 组件
-import SendIcon from "./icons/SendIcon.tsx";
-
-// 语言到 date-fns locale 的映射
 const localeMap: Record<string, Locale> = {
   zh: zhCN,
   "zh-TW": zhTW,
   en: enUS,
-  fr: fr,
-  ja: ja,
-  de: de,
-  ko: ko,
-  it: it,
-  pt: pt,
-  tr: tr,
-  ru: ru,
+  fr,
+  ja,
+  de,
+  ko,
+  it,
+  pt,
+  tr,
+  ru,
 };
 
 interface MailListProps {
@@ -41,17 +51,16 @@ interface MailListProps {
   isDeleting: boolean;
   onRefresh: () => void;
   selectedIds: string[];
-  setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedIds: Dispatch<SetStateAction<string[]>>;
   isAddressCreated: boolean;
   onSelectEmail: (email: Email) => void;
   showViewPasswordButton: boolean;
   onShowPassword: () => void;
-  // feat: 新增 props，用于接收当前选中的邮件和关闭详情页的回调
   selectedEmail: Email | null;
   onCloseDetail: () => void;
-  onExpand: () => void; // feat: 新增 onExpand 回调
+  onExpand: () => void;
   canSendEmails: boolean;
-  onOpenSender: () => void; // 打开发件弹窗
+  onOpenSender: () => void;
 }
 
 export function MailList({
@@ -74,204 +83,208 @@ export function MailList({
   onOpenSender,
 }: MailListProps) {
   const { t, i18n } = useTranslation();
+  const currentLocale =
+    localeMap[i18n.resolvedLanguage ?? i18n.language] ?? enUS;
+  const allSelected = emails.length > 0 && selectedIds.length === emails.length;
 
-  // 获取当前语言对应的 date-fns locale
-  const currentLocale = localeMap[i18n.language] || enUS;
-
-  const handleSelect = (id: string) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
+  const handleSelect = (id: string, selected: boolean) => {
+    setSelectedIds((previous) =>
+      selected
+        ? previous.includes(id)
+          ? previous
+          : [...previous, id]
+        : previous.filter((item) => item !== id),
     );
   };
 
-  const handleSelectAll = () => {
-    if (emails.length === 0) return;
-    if (selectedIds.length === emails.length) {
-      setSelectedIds([]);
-    } else {
-      setSelectedIds(emails.map((e) => e.id));
-    }
+  const handleSelectAll = (values: Array<string | number>) => {
+    setSelectedIds(values.includes("all") ? emails.map(({ id }) => id) : []);
   };
 
   const renderBody = () => {
-    // feat: 如果有选中的邮件，则渲染邮件详情
     if (selectedEmail) {
-      return <MailDetail email={selectedEmail} onClose={onCloseDetail} />;
+      return <MailDetail email={selectedEmail} />;
     }
 
-    // 状态 1: 还未创建地址 - 展示站点统计数据
     if (!isAddressCreated) {
       return (
-        <div className="w-full items-center h-full flex-col justify-center flex">
+        <div className="mail-empty-state">
           <SiteStats />
         </div>
       );
     }
 
-    // 状态 2: 正在进行首次加载
     if (isLoading) {
       return (
-        <div className="w-full items-center h-full flex-col justify-center flex">
-          <Loader />
-          <p className="text-zinc-400 mt-6">{t("Waiting for emails...")}</p>
+        <div className="mail-list-items" aria-hidden="true">
+          <Skeleton variant="paragraph" rows={2} />
+          <Skeleton variant="paragraph" rows={2} />
         </div>
       );
     }
 
-    // 状态 3: 收件箱为空
     if (emails.length === 0) {
       return (
-        <div className="w-full items-center h-full flex-col justify-center flex">
-          {/* 修复: 只要地址已创建且邮箱为空，就持续显示加载动画 */}
-          <Loader />
-          <p className="text-zinc-400 mt-6">{t("Waiting for emails...")}</p>
+        <div className="mail-empty-state" role="status">
+          <InboxIcon
+            className="mail-empty-state__icon"
+            size={38}
+            aria-hidden="true"
+          />
+          <p>{t("Waiting for emails...")}</p>
         </div>
       );
     }
 
-    // 状态 4: 显示邮件列表
-    return emails.map((email: Email) => (
-      <div key={email.id} className="flex items-center gap-2 mb-1">
-        <input
-          type="checkbox"
-          className="h-4 w-4 rounded border-neutral-300 bg-neutral-100 data-[state=checked]:border-neutral-900 data-[state=checked]:bg-neutral-600 data-[state=checked]:text-neutral-100 dark:border-neutral-700 dark:bg-neutral-800 dark:data-[state=checked]:border-neutral-300 dark:data-[state=checked]:bg-neutral-300"
-          checked={selectedIds.includes(email.id)}
-          onChange={() => handleSelect(email.id)}
-        />
-        <div
-          onClick={() => onSelectEmail(email)}
-          className="cursor-pointer flex-1 flex flex-col items-start gap-2 rounded-lg border border-zinc-600 p-3 text-left text-sm transition-all hover:bg-zinc-700">
-          <div className="flex w-full flex-col gap-1">
-            <div className="flex items-center">
-              <div className="flex items-center gap-2">
-                {/* feat: 在用户名后显示邮箱地址 */}
-                <div className="font-semibold">
-                  {email.from?.name || email.messageFrom}{" "}
-                  {email.from?.address && `(${email.from.address})`}
-                </div>
-              </div>
-              <div className={"ml-auto text-xs"}>
-                {formatDistanceToNow(new Date(email.date || email.createdAt), {
-                  addSuffix: true,
-                  locale: currentLocale,
-                })}
-              </div>
-            </div>
-            <div className="text-xs font-medium">{email.subject}</div>
+    return (
+      <div className="mail-list-items">
+        {emails.map((email) => (
+          <div className="mail-item-row" key={email.id}>
+            <Checkbox
+              size="small"
+              options={[
+                {
+                  value: email.id,
+                  label: (
+                    <span className="sr-only">
+                      {email.from?.name || email.messageFrom}: {email.subject}
+                    </span>
+                  ),
+                },
+              ]}
+              value={selectedIds.includes(email.id) ? [email.id] : []}
+              onChange={(values) =>
+                handleSelect(email.id, values.includes(email.id))
+              }
+            />
+            <Button
+              type="default"
+              block
+              className="mail-item"
+              onClick={() => onSelectEmail(email)}
+            >
+              <span className="mail-item__content">
+                <span className="mail-item__heading">
+                  <strong>{email.from?.name || email.messageFrom}</strong>
+                  <span className="mail-item__meta">
+                    {email.from?.address}
+                    {formatDistanceToNow(
+                      new Date(email.date || email.createdAt),
+                      { addSuffix: true, locale: currentLocale },
+                    )}
+                  </span>
+                </span>
+                <span className="font-semibold">{email.subject}</span>
+                <span className="mail-item__preview">
+                  {(email.text || email.html || "").substring(0, 300)}
+                </span>
+              </span>
+            </Button>
           </div>
-          <div className="line-clamp-2 text-xs text-zinc-300 font-normal w-full">
-            {(email.text || email.html || "").substring(0, 300)}
-          </div>
-        </div>
+        ))}
       </div>
-    ));
+    );
   };
 
   return (
-    <div className="rounded-md border border-cyan-50/20 text-white">
-      {/* 邮件列表头部 */}
-      <div className="w-full rounded-t-md p-2 flex items-center bg-zinc-800 text-zinc-200 gap-2">
-        <div className="flex items-center justify-start gap-2 font-bold">
-          <MailIcon className="size-6" />
-          {t("INBOX")}
+    <Card className="inbox-card">
+      <div className="mail-list-header">
+        <div className="mail-list-header__title">
+          <MailIcon size={22} aria-hidden="true" />
+          <h2>{t("INBOX")}</h2>
           {isAddressCreated && emails.length > 0 && !selectedEmail && (
-            <span className="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-zinc-600 rounded-full">
-              {emails.length}
-            </span>
+            <Badge count={emails.length} color="app-teal" />
           )}
-          {/* feat: 在详情页模式下，显示返回按钮 */}
           {selectedEmail && (
-            <button
+            <Button
+              type="text"
+              size="small"
+              icon={<ArrowLeftIcon aria-hidden="true" />}
               onClick={onCloseDetail}
-              className="flex items-center gap-1 text-sm font-semibold text-cyan-400 hover:text-cyan-300 ml-2">
-              <ArrowUturnLeft />
+            >
               {t("Return to email list")}
-            </button>
+            </Button>
           )}
         </div>
 
-        {/* 操作按钮区域 */}
-        <div className="ml-auto flex items-center gap-2">
-          {/* feat: 详情页模式下的操作按钮 */}
+        <div className="mail-list-header__actions">
           {selectedEmail ? (
             <>
-              <button
+              <Button
+                type="text"
+                size="small"
+                icon={<MaximizeIcon aria-hidden="true" />}
+                title={t("Expand")}
+                aria-label={t("Expand")}
                 onClick={onExpand}
-                className="p-1 rounded text-cyan-400 hover:text-cyan-300"
-                title={t("Expand")}>
-                <Expand className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => onDelete([selectedEmail.id])}
+              />
+              <Button
+                type="default"
+                size="small"
+                danger
+                icon={<TrashIcon aria-hidden="true" />}
+                title={t("Delete")}
+                aria-label={t("Delete")}
                 disabled={isDeleting}
-                className="p-1 rounded text-red-500 disabled:text-gray-500 hover:text-red-400"
-                title={t("Delete")}>
-                <TrashIcon className="w-5 h-5" />
-              </button>
+                onClick={() => onDelete([selectedEmail.id])}
+              />
             </>
           ) : (
             <>
-              {/* 列表页模式下的操作按钮 */}
               {showViewPasswordButton && (
-                <button
-                  className="p-1 rounded text-cyan-400 hover:text-cyan-300"
+                <Button
+                  type="text"
+                  size="small"
+                  icon={<KeyIcon aria-hidden="true" />}
                   title={t("View password")}
-                  onClick={onShowPassword}>
-                  <PasswordIcon className="w-5 h-5" />
-                </button>
+                  aria-label={t("View password")}
+                  onClick={onShowPassword}
+                />
               )}
               {canSendEmails && (
-                <button
-                  className="p-1 rounded text-cyan-400 hover:text-cyan-300"
+                <Button
+                  type="text"
+                  size="small"
+                  icon={<SendIcon aria-hidden="true" />}
                   title={t("Send email")}
-                  onClick={onOpenSender}>
-                  <SendIcon className="w-5 h-5" />
-                </button>
+                  aria-label={t("Send email")}
+                  onClick={onOpenSender}
+                />
               )}
               {isAddressCreated && emails.length > 0 && (
                 <>
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded bg-zinc-700 border-zinc-600 text-cyan-600 focus:ring-cyan-500"
-                    title="全选"
-                    checked={
-                      selectedIds.length === emails.length && emails.length > 0
-                    }
+                  <Checkbox
+                    size="small"
+                    options={[{ value: "all", label: t("Select all") }]}
+                    value={allSelected ? ["all"] : []}
                     onChange={handleSelectAll}
                   />
-                  <button
-                    onClick={() => onDelete(selectedIds)}
+                  <Button
+                    type="default"
+                    size="small"
+                    danger
+                    icon={<TrashIcon aria-hidden="true" />}
+                    title={t("Delete selected")}
+                    aria-label={t("Delete selected")}
                     disabled={selectedIds.length === 0 || isDeleting}
-                    className="p-1 rounded text-red-500 disabled:text-gray-500 hover:text-red-400"
-                    title="删除选中">
-                    <TrashIcon className="w-5 h-5" />
-                  </button>
+                    onClick={() => onDelete(selectedIds)}
+                  />
                 </>
               )}
-              <button
-                className="p-1 rounded"
-                title="refresh"
-                onClick={onRefresh} // feat: 添加手动刷新事件
-                // fix: 只有在创建地址后，刷新按钮才可用, 且在加载中时禁用
-                disabled={!isAddressCreated || isFetching}>
-                <RefreshIcon
-                  className={clsx("size-6", isAddressCreated && "animate-spin")}
-                />
-              </button>
+              <Button
+                type="text"
+                size="small"
+                icon={<RefreshIcon aria-hidden="true" />}
+                title={t("Refresh")}
+                aria-label={t("Refresh")}
+                onClick={onRefresh}
+                disabled={!isAddressCreated || isFetching}
+              />
             </>
           )}
         </div>
       </div>
-
-      {/* 邮件列表主体 */}
-      {/* fix: 当显示详情时，移除 grids 背景和 h-[488px] 的高度限制 */}
-      <div
-        className={clsx(
-          "flex flex-col flex-1 overflow-y-auto p-2",
-          !selectedEmail && "grids h-[488px]",
-        )}>
-        {renderBody()}
-      </div>
-    </div>
+      <div className="mail-list-body">{renderBody()}</div>
+    </Card>
   );
 }

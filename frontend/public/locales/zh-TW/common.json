@@ -129,5 +129,9 @@
   "Addresses Created": "累計建立信箱",
   "Emails Received": "累計接收郵件",
   "API Keys Created": "累計建立 API 金鑰",
-  "API Calls": "累計 API 呼叫"
+  "API Calls": "累計 API 呼叫",
+  "Refresh": "重新整理",
+  "Copy failed": "複製失敗",
+  "Copy to clipboard": "複製到剪貼簿",
+  "Open navigation menu": "開啟導覽選單"
 }

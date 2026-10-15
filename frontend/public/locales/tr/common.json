@@ -129,5 +129,9 @@
   "Addresses Created": "Olusturulan Adresler",
   "Emails Received": "Alinan E-postalar",
   "API Keys Created": "Olusturulan API Anahtarlari",
-  "API Calls": "API Cagrilari"
+  "API Calls": "API Cagrilari",
+  "Refresh": "Yenile",
+  "Copy failed": "Kopyalama başarısız",
+  "Copy to clipboard": "Panoya kopyala",
+  "Open navigation menu": "Gezinme menüsünü aç"
 }
