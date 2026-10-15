@@ -19,7 +19,7 @@ export function LoadingScreen() {
     <main className="app-loading" role="status" aria-label="Loading">
       <Card className="app-loading-card">
         <Skeleton variant="paragraph" rows={3} />
-        <p>Loading TideMail…</p>
+        <p>Loading tidemail…</p>
       </Card>
     </main>
   );

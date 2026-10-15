@@ -153,22 +153,62 @@ textarea:focus-visible {
   color: var(--animal-text-color);
 }
 
-.site-language-select {
-  width: 148px;
+.site-settings-trigger__label {
+  margin-left: 6px;
 }
 
-.site-theme-select {
-  width: 136px;
+.settings-modal {
+  display: grid;
+  gap: 22px;
+  color: var(--animal-text-color);
 }
 
-.site-nav__preferences {
-  display: flex;
-  align-items: center;
+.settings-modal__preferences {
+  display: grid;
+  gap: 18px;
+}
+
+.settings-modal__field {
+  display: grid;
   gap: 8px;
 }
 
-.site-nav__mobile-preferences {
-  display: none;
+.settings-modal__label {
+  color: var(--animal-text-color);
+  font-weight: 700;
+}
+
+.settings-modal__field .wrapper {
+  width: 100%;
+}
+
+.settings-modal__information {
+  display: grid;
+  gap: 14px;
+  padding-top: 18px;
+  border-top: 1px solid var(--animal-border-color-light);
+  color: var(--animal-text-color-secondary);
+  font-size: var(--animal-font-size-sm);
+}
+
+.settings-modal__information-row {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+}
+
+.settings-modal__information-row .settings-modal__label {
+  color: var(--animal-text-color-secondary);
+}
+
+.settings-modal__license p {
+  margin: 6px 0 0;
+}
+
+.settings-modal__information a {
+  color: var(--animal-primary-color);
+  font-weight: 700;
 }
 
 .site-nav__mobile-toggle,
@@ -621,20 +661,8 @@ textarea:focus-visible {
     background: var(--animal-bg-color);
   }
 
-  .site-nav__preferences--desktop {
+  .site-settings-trigger__label {
     display: none;
-  }
-
-  .site-nav__mobile-preferences {
-    display: grid;
-    gap: 10px;
-    padding-top: 8px;
-    border-top: 1px solid var(--animal-border-color-light);
-  }
-
-  .site-language-select,
-  .site-theme-select {
-    width: 100%;
   }
 
   .home-layout {

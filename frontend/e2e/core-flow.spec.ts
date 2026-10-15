@@ -161,7 +161,7 @@ test("sends email with the mailbox bearer authorization", async ({ page }) => {
   await page.getByRole("button", { name: "Send email" }).click();
   await page.getByLabel("Sending name").fill("Inbox owner");
   await page.getByLabel("Recipient email *").fill("recipient@example.org");
-  await page.getByLabel("Email subject *").fill("A reply from TideMail");
+  await page.getByLabel("Email subject *").fill("A reply from tidemail");
   await page
     .getByLabel("Email content *")
     .fill("Hello from the temporary inbox.");
@@ -174,7 +174,7 @@ test("sends email with the mailbox bearer authorization", async ({ page }) => {
     body: {
       senderName: "Inbox owner",
       receiverEmail: "recipient@example.org",
-      subject: "A reply from TideMail",
+      subject: "A reply from tidemail",
       content: "Hello from the temporary inbox.",
       type: "text/plain",
     },

@@ -1,5 +1,5 @@
 ---
-name: TideMail
+name: tidemail
 description: A warm, lightweight temporary-mail interface built with Animal-Island-UI.
 colors:
   island-teal: "#19c8b9"
@@ -69,13 +69,13 @@ components:
     padding: "16px 24px"
 ---
 
-# Design System: TideMail
+# Design System: tidemail
 
 ## Overview
 
 **Creative North Star: "The Warm Island Post Office"**
 
-TideMail pairs a private, temporary mailbox with the calm visual language of Animal-Island-UI. Warm paper surfaces, bark-brown text, rounded controls, and a restrained island-teal accent make the inbox feel approachable while keeping message actions easy to scan.
+tidemail pairs a private, temporary mailbox with the calm visual language of Animal-Island-UI. Warm paper surfaces, bark-brown text, rounded controls, and a restrained island-teal accent make the inbox feel approachable while keeping message actions easy to scan.
 
 The interface favors familiar patterns over decoration: create an address, read and manage messages, then open secondary tasks in compact dialogs. The component library supplies the recurring shapes and states; project CSS handles page layout and responsive behavior.
 

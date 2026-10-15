@@ -1,4 +1,4 @@
-# TideMail 项目说明
+# tidemail 项目说明
 
 ## 项目结构
 

@@ -77,7 +77,7 @@ export function SenderModal({
     <Modal
       open={open}
       variant="game"
-      title="TideMail Sender"
+      title="tidemail Sender"
       width={700}
       typewriter={false}
       onClose={onClose}

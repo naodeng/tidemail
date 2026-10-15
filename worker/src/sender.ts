@@ -213,7 +213,7 @@ export function appendSenderAttribution(message: OutgoingEmail): string {
 }
 
 export function getProviderSenderName(message: OutgoingEmail): string {
-  return message.senderName ? `${message.senderName} via TideMail` : "TideMail";
+  return message.senderName ? `${message.senderName} via tidemail` : "tidemail";
 }
 
 export function buildResendPayload(

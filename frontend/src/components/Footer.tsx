@@ -1,18 +1,22 @@
 import { Link } from "react-router-dom";
 import { MailIcon } from "naive-icons";
+import { useTranslation } from "react-i18next";
 
 export function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="site-footer">
       <div>
         <Link to="/" className="site-brand">
-          TideMail
+          tidemail
         </Link>
         <p>
-          © {new Date().getFullYear()} Products of{" "}
+          © {new Date().getFullYear()}{" "}
           <a href="https://naodeng.com.cn/" target="_blank" rel="noreferrer">
-            naodeng.com.cn
-          </a>
+            naodeng
+          </a>{" "}
+          {t("All Rights Reserved.")}
         </p>
       </div>
 
@@ -35,7 +39,7 @@ export function Footer() {
           Twitter
         </a>
         <a
-          href="https://github.com/naodeng/vmail"
+          href="https://github.com/naodeng/tidemail"
           target="_blank"
           rel="noreferrer"
         >

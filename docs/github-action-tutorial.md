@@ -1,6 +1,6 @@
 # Cloudflare 部署教程
 
-TideMail 使用 Cloudflare Workers、D1 和 Email Routing。仓库内的 GitHub Actions 工作流负责测试、数据库迁移和 Worker 部署。
+tidemail 使用 Cloudflare Workers、D1 和 Email Routing。仓库内的 GitHub Actions 工作流负责测试、数据库迁移和 Worker 部署。
 
 ## 1. 准备 Cloudflare 资源
 

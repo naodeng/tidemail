@@ -1,6 +1,6 @@
-# TideMail 部署指南
+# tidemail 部署指南
 
-本文面向协助部署 TideMail 的 AI 助手。项目运行在 Cloudflare Workers 和 D1，产品主流程是创建多域名邮箱、接收/查看/删除邮件，以及可选发信。仓库不再提供对外 API Key 产品。
+本文面向协助部署 tidemail 的 AI 助手。项目运行在 Cloudflare Workers 和 D1，产品主流程是创建多域名邮箱、接收/查看/删除邮件，以及可选发信。仓库不再提供对外 API Key 产品。
 
 ## 部署前准备
 

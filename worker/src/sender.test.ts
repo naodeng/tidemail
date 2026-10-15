@@ -208,7 +208,7 @@ test("provider payloads use the configured sender and authenticated reply-to", (
     outgoingEmail,
     "verified@example.com",
   );
-  assert.equal(resendPayload.from, "Alice via TideMail <verified@example.com>");
+  assert.equal(resendPayload.from, "Alice via tidemail <verified@example.com>");
   assert.equal(resendPayload.reply_to, "alice@example.com");
   assert.equal(
     resendPayload.text,
@@ -253,10 +253,10 @@ test("HTML attribution escapes user-controlled sender metadata", () => {
 });
 
 test("sender attribution supports named and unnamed mailboxes", () => {
-  assert.equal(getProviderSenderName(outgoingEmail), "Alice via TideMail");
+  assert.equal(getProviderSenderName(outgoingEmail), "Alice via tidemail");
   assert.equal(
     getProviderSenderName({ ...outgoingEmail, senderName: "" }),
-    "TideMail",
+    "tidemail",
   );
   assert.equal(
     appendSenderAttribution({ ...outgoingEmail, senderName: "" }),

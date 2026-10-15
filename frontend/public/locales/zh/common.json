@@ -80,11 +80,19 @@
   "Copy failed": "复制失败",
   "Copy to clipboard": "复制到剪贴板",
   "Open navigation menu": "打开导航菜单",
-  "About summary": "TideMail 支持从已配置的多个域名创建临时邮箱，用于收取和查看邮件；配置发信服务后也可发送邮件。服务运行于 Cloudflare。",
+  "About summary": "tidemail 支持从已配置的多个域名创建临时邮箱，用于收取和查看邮件；配置发信服务后也可发送邮件。服务运行于 Cloudflare。",
   "Create a temporary address to receive mail": "创建临时邮箱后即可收取邮件。",
   "Language": "语言",
   "Theme": "主题",
   "System default": "跟随系统",
   "Light": "浅色",
-  "Dark": "深色"
+  "Dark": "深色",
+  "Settings": "设置",
+  "Preferences": "偏好设置",
+  "Project information": "项目信息",
+  "Version": "版本",
+  "License": "许可证",
+  "GNU General Public License v3.0 only": "GNU 通用公共许可证第 3 版（仅此版本）",
+  "GPL-3.0-only summary": "本项目仅采用 GPL-3.0-only 许可证，完整授权条款请查看许可证全文。",
+  "All Rights Reserved.": "保留所有权利。"
 }

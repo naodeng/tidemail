@@ -360,7 +360,7 @@ export function Home() {
                 <li>
                   <CodeIcon size={18} aria-hidden="true" />
                   <a
-                    href="https://github.com/naodeng/vmail"
+                    href="https://github.com/naodeng/tidemail"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

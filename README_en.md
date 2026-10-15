@@ -1,6 +1,6 @@
-# TideMail
+# tidemail
 
-TideMail is a lightweight temporary email service built with Cloudflare Workers and D1. Create temporary addresses on configured domains, receive and manage messages, and enable outbound email when needed.
+tidemail is a lightweight temporary email service built with Cloudflare Workers and D1. Create temporary addresses on configured domains, receive and manage messages, and enable outbound email when needed.
 
 [简体中文](README.md) · [Cloudflare deployment guide](docs/github-action-tutorial.md)
 
