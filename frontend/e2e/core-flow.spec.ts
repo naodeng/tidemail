@@ -210,22 +210,30 @@ test("switches theme, follows the system, and keeps language choices to English 
 
   await page.getByRole("button", { name: "Settings" }).click();
   const themeSelect = page.getByRole("combobox", { name: "Theme" });
-  await expect(themeSelect.locator("option")).toHaveCount(3);
-  await themeSelect.selectOption("dark");
+  await themeSelect.click();
+  await expect(page.getByRole("listbox", { name: "Theme" })).toBeVisible();
+  await expect(page.getByRole("option", { name: "Dark" })).toBeVisible();
+  await page.getByRole("option", { name: "Dark" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect
     .poll(() => page.evaluate(() => localStorage.getItem("tidemail-theme")))
     .toBe("dark");
 
-  await themeSelect.selectOption("system");
+  await themeSelect.click();
+  await expect(
+    page.getByRole("option", { name: "System default" }),
+  ).toBeVisible();
+  await page.getByRole("option", { name: "System default" }).click();
   await page.emulateMedia({ colorScheme: "dark" });
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await page.emulateMedia({ colorScheme: "light" });
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 
   const languageSelect = page.getByRole("combobox", { name: "Language" });
-  await expect(languageSelect.locator("option")).toHaveCount(2);
-  await languageSelect.selectOption("zh");
+  await languageSelect.click();
+  await expect(page.getByRole("option", { name: "English" })).toBeVisible();
+  await expect(page.getByRole("option", { name: "简体中文" })).toBeVisible();
+  await page.getByRole("option", { name: "简体中文" }).click();
   await expect(
     page.getByRole("heading", { name: "虚拟临时邮箱" }),
   ).toBeVisible();

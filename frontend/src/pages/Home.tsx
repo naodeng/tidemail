@@ -347,7 +347,7 @@ export function Home() {
 
         <div className="home-layout">
           <aside className="home-sidebar">
-            <div className="surface-panel home-sidebar__card">
+            <Card className="home-sidebar__card">
               <ul className="service-feature-list">
                 <li>
                   <CodeIcon size={18} aria-hidden="true" />
@@ -364,9 +364,9 @@ export function Home() {
                   <span>{t("Multi-domain configurable")}</span>
                 </li>
               </ul>
-            </div>
+            </Card>
 
-            <div className="surface-panel home-sidebar__card">
+            <Card className="home-sidebar__card">
               {address ? (
                 <section>
                   <h2>{t("Email address")}</h2>
@@ -436,7 +436,7 @@ export function Home() {
                   </Button>
                 </section>
               )}
-            </div>
+            </Card>
           </aside>
 
           <section aria-label={t("Inbox")}>

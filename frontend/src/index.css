@@ -107,13 +107,6 @@ textarea:focus-visible {
   padding: 24px;
 }
 
-.surface-panel {
-  border: 1px solid var(--animal-border-color-light);
-  border-radius: var(--animal-border-radius-base);
-  background: var(--animal-bg-color-secondary);
-  color: var(--animal-text-color);
-}
-
 .site-header {
   position: sticky;
   z-index: 30;
@@ -225,52 +218,15 @@ textarea:focus-visible {
   width: 100%;
 }
 
-.settings-modal__select-input {
+.settings-modal__select > div {
   width: 100%;
-  min-height: 44px;
-  padding: 8px 42px 8px 13px;
-  appearance: none;
-  border: 2px solid #e8dcc8;
-  border-radius: 12px;
-  background: #fff;
-  color: #725d42;
-  color-scheme: light;
-  cursor: pointer;
-  font-family: var(--animal-font-family, "Nunito", "Noto Sans SC", sans-serif);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.4;
-  transition:
-    border-color var(--animal-motion-duration-base) var(--animal-motion-ease),
-    background-color var(--animal-motion-duration-base)
-      var(--animal-motion-ease);
 }
 
-.settings-modal__select-input:hover {
-  border-color: #d4c4a8;
-  background: #fffdf7;
-}
-
-.settings-modal__select-input:focus-visible {
-  border-color: #076e65;
-  outline: 2px solid #076e65;
-  outline-offset: 2px;
-}
-
-.settings-modal__select > svg {
-  position: absolute;
-  top: 50%;
-  right: 13px;
-  width: 16px;
-  height: 16px;
-  color: #a09080;
-  pointer-events: none;
-  transform: translateY(-50%);
-  transition: color var(--animal-motion-duration-base) var(--animal-motion-ease);
-}
-
-.settings-modal__select-input:focus-visible + svg {
-  color: #076e65;
+.settings-modal__select [role="listbox"] {
+  left: 0 !important;
+  right: auto !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 .settings-modal__information {

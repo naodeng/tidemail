@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Skeleton } from "animal-island-ui";
+import { Card, Skeleton } from "animal-island-ui";
 import axios from "axios";
 import { lazy, useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -17,10 +17,10 @@ const queryClient = new QueryClient();
 export function LoadingScreen() {
   return (
     <main className="app-loading" role="status" aria-label="Loading">
-      <section className="surface-panel app-loading-card">
+      <Card className="app-loading-card">
         <Skeleton variant="paragraph" rows={3} />
         <p>Loading tidemail…</p>
-      </section>
+      </Card>
     </main>
   );
 }

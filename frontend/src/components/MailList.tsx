@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { formatDistanceToNow, type Locale } from "date-fns";
 import { enUS, zhCN } from "date-fns/locale";
-import { Badge, Button, Checkbox, Skeleton } from "animal-island-ui";
+import { Badge, Button, Card, Checkbox, Skeleton } from "animal-island-ui";
 import {
   ArrowLeftIcon,
   InboxIcon,
@@ -179,7 +179,7 @@ export function MailList({
   };
 
   return (
-    <section className="surface-panel inbox-card" aria-label={t("Inbox")}>
+    <Card className="inbox-card">
       <div className="mail-list-header">
         <div className="mail-list-header__title">
           <MailIcon size={22} aria-hidden="true" />
@@ -277,6 +277,6 @@ export function MailList({
         </div>
       </div>
       <div className="mail-list-body">{renderBody()}</div>
-    </section>
+    </Card>
   );
 }
