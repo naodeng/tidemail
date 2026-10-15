@@ -5,12 +5,7 @@ import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
 import { Button, Card, Select } from "animal-island-ui";
-import {
-  CodeIcon,
-  CloseIcon,
-  GlobeIcon,
-  KeyIcon,
-} from "naive-icons";
+import { CodeIcon, CloseIcon, GlobeIcon, KeyIcon } from "naive-icons";
 import { MailList } from "../components/MailList.tsx";
 import { CopyButton } from "../components/CopyButton.tsx";
 import {
@@ -347,15 +342,12 @@ export function Home() {
       <main className="home-page">
         <section className="home-heading">
           <h1 className="home-title">{t("Virtual Temporary Email")}</h1>
-          <p>
-            {t("Privacy friendly")} · {t("Valid for 1 Day")} ·{" "}
-            {t("100% Run on Cloudflare")}
-          </p>
+          <p>{t("Home description")}</p>
         </section>
 
         <div className="home-layout">
           <aside className="home-sidebar">
-            <Card className="home-sidebar__card">
+            <div className="surface-panel home-sidebar__card">
               <ul className="service-feature-list">
                 <li>
                   <CodeIcon size={18} aria-hidden="true" />
@@ -372,9 +364,9 @@ export function Home() {
                   <span>{t("Multi-domain configurable")}</span>
                 </li>
               </ul>
-            </Card>
+            </div>
 
-            <Card className="home-sidebar__card">
+            <div className="surface-panel home-sidebar__card">
               {address ? (
                 <section>
                   <h2>{t("Email address")}</h2>
@@ -389,7 +381,7 @@ export function Home() {
                     />
                   )}
                   <Button
-                    type="default"
+                    type="primary"
                     danger
                     block
                     onClick={handleStopAddress}
@@ -414,7 +406,7 @@ export function Home() {
                   </label>
                   {config.turnstileEnabled && (
                     <div className="form-field">
-                      <span>{t("Validater")}</span>
+                      <span>{t("Verification")}</span>
                       <div className="turnstile-shell">
                         <Turnstile
                           className="w-full"
@@ -444,10 +436,10 @@ export function Home() {
                   </Button>
                 </section>
               )}
-            </Card>
+            </div>
           </aside>
 
-          <section aria-label={t("INBOX")}>
+          <section aria-label={t("Inbox")}>
             <MailList
               isAddressCreated={Boolean(address)}
               emails={emails}

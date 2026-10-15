@@ -77,53 +77,73 @@ export function SenderModal({
     <Modal
       open={open}
       variant="game"
-      title="tidemail Sender"
+      title={t("Send email")}
       width={700}
       typewriter={false}
+      footer={
+        <div className="modal-action-footer">
+          <Button
+            type="text"
+            size="small"
+            onClick={onClose}
+            disabled={isSending}
+          >
+            {t("Cancel")}
+          </Button>
+        </div>
+      }
       onClose={onClose}
     >
       <div className="modal-form-content">
         <p>{t("Forward only, no storage")}</p>
         <form className="modal-form" onSubmit={handleSubmit}>
           <div className="modal-form__row">
-            <Input
-              value={config.senderEmail ?? ""}
-              type="email"
-              name="fromEmail"
-              placeholder={t("Sending email *")}
-              readOnly
-              title={`${t("Reply-To:")} ${senderEmail}`}
-              aria-label={t("Sending email *")}
-            />
-            <Input
-              type="text"
-              name="senderName"
-              placeholder={t("Sending name")}
-              aria-label={t("Sending name")}
-            />
+            <label className="form-field">
+              {t("Sending email *")}
+              <Input
+                value={config.senderEmail ?? ""}
+                type="email"
+                name="fromEmail"
+                readOnly
+                title={`${t("Reply-To:")} ${senderEmail}`}
+                aria-label={t("Sending email *")}
+              />
+            </label>
+            <label className="form-field">
+              {t("Sending name")}
+              <Input
+                type="text"
+                name="senderName"
+                aria-label={t("Sending name")}
+              />
+            </label>
           </div>
           <div className="modal-form__row">
-            <Input
-              type="email"
-              name="receiverEmail"
-              placeholder={t("Recipient email *")}
-              required
-              aria-label={t("Recipient email *")}
-            />
-            <Input
-              type="text"
-              name="subject"
-              placeholder={t("Email subject *")}
-              required
-              aria-label={t("Email subject *")}
-            />
+            <label className="form-field">
+              {t("Recipient email *")}
+              <Input
+                type="email"
+                name="receiverEmail"
+                required
+                aria-label={t("Recipient email *")}
+              />
+            </label>
+            <label className="form-field">
+              {t("Email subject *")}
+              <Input
+                type="text"
+                name="subject"
+                required
+                aria-label={t("Email subject *")}
+              />
+            </label>
           </div>
           <label className="form-field">
-            Email format
+            {t("Email format")}
             <Select
               options={[
-                { key: "text/plain", label: "Plain text" },
-                { key: "text/html", label: "HTML" },
+                { key: "text/plain", label: t("Plain text") },
+                { key: "text/html", label: t("HTML") },
               ]}
               value={contentType}
               onChange={setContentType}
@@ -135,7 +155,7 @@ export function SenderModal({
             <textarea
               className="app-textarea"
               name="content"
-              placeholder={t("Email content *")}
+              aria-label={t("Email content *")}
               required
             />
           </label>

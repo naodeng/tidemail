@@ -1,4 +1,5 @@
-import { Modal, Select } from "animal-island-ui";
+import { Button, Modal, Select } from "animal-island-ui";
+import { CloseIcon } from "naive-icons";
 import packageMetadata from "../../../package.json";
 import { useTranslation } from "react-i18next";
 import { useTheme, type ThemePreference } from "../hooks/useTheme.tsx";
@@ -29,7 +30,18 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
       title={t("Settings")}
       width={520}
       typewriter={false}
-      footer={null}
+      footer={
+        <div className="modal-action-footer">
+          <Button
+            type="text"
+            size="small"
+            icon={<CloseIcon aria-hidden="true" />}
+            onClick={onClose}
+          >
+            {t("Close")}
+          </Button>
+        </div>
+      }
       onClose={onClose}
     >
       <div className="settings-modal">

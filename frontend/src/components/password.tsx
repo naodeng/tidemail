@@ -35,20 +35,34 @@ export function PasswordModal({
       title={t("Save password")}
       width={520}
       typewriter={false}
+      footer={
+        <div className="modal-action-footer">
+          <Button
+            type="text"
+            size="small"
+            onClick={onClose}
+            disabled={isLoggingIn}
+          >
+            {t("Cancel")}
+          </Button>
+        </div>
+      }
       onClose={onClose}
     >
       <div className="modal-form-content">
         <p>{t("Save your password and continue using this email in 1 day")}</p>
         <form className="modal-form" onSubmit={handleSubmit}>
-          <Input
-            type="password"
-            name="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder={t("Enter your password *")}
-            aria-label={t("Enter your password *")}
-          />
+          <label className="form-field">
+            {t("Enter your password *")}
+            <Input
+              type="password"
+              name="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              aria-label={t("Enter your password *")}
+            />
+          </label>
           <p>
             {t(
               "How to get a password? Click to create a temporary email and receive at least one email to generate a password",

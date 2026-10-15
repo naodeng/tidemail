@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Card, Input } from "animal-island-ui";
+import { Button, Input } from "animal-island-ui";
 import { LockIcon } from "naive-icons";
 import { useTranslation } from "react-i18next";
 
@@ -20,19 +20,21 @@ export function SiteUnlock({ onUnlock, isUnlocking, error }: SiteUnlockProps) {
 
   return (
     <main className="app-loading">
-      <Card className="site-unlock-card">
+      <section className="surface-panel site-unlock-card">
         <h1>{t("Site locked")}</h1>
         <p>{t("Enter site password to continue")}</p>
         <form onSubmit={handleSubmit}>
-          <Input
-            type="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder={t("Password")}
-            prefix={<LockIcon aria-hidden="true" />}
-            aria-label={t("Password")}
-          />
+          <label className="form-field">
+            {t("Password")}
+            <Input
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              prefix={<LockIcon aria-hidden="true" />}
+              aria-label={t("Password")}
+            />
+          </label>
           {error && <p role="alert">{error}</p>}
           <Button
             type="primary"
@@ -44,7 +46,7 @@ export function SiteUnlock({ onUnlock, isUnlocking, error }: SiteUnlockProps) {
             {isUnlocking ? t("Unlocking...") : t("Unlock")}
           </Button>
         </form>
-      </Card>
+      </section>
     </main>
   );
 }
