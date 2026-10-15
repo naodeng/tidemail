@@ -1,5 +1,5 @@
-import { Button, Modal, Select } from "animal-island-ui";
-import { CloseIcon } from "naive-icons";
+import { Button, Modal } from "animal-island-ui";
+import { ChevronDownIcon, CloseIcon } from "naive-icons";
 import packageMetadata from "../../../package.json";
 import { useTranslation } from "react-i18next";
 import { useTheme, type ThemePreference } from "../hooks/useTheme.tsx";
@@ -56,28 +56,44 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
             >
               {t("Language")}
             </span>
-            <Select
-              aria-labelledby="settings-language-label"
-              options={languages}
-              value={currentLanguage}
-              onChange={(language) => void i18n.changeLanguage(language)}
-            />
+            <div className="settings-modal__select">
+              <select
+                aria-labelledby="settings-language-label"
+                className="settings-modal__select-input"
+                value={currentLanguage}
+                onChange={(event) =>
+                  void i18n.changeLanguage(event.currentTarget.value)
+                }
+              >
+                {languages.map(({ key, label }) => (
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDownIcon aria-hidden="true" />
+            </div>
           </div>
 
           <div className="settings-modal__field">
             <span id="settings-theme-label" className="settings-modal__label">
               {t("Theme")}
             </span>
-            <Select
-              aria-labelledby="settings-theme-label"
-              options={[
-                { key: "system", label: t("System default") },
-                { key: "light", label: t("Light") },
-                { key: "dark", label: t("Dark") },
-              ]}
-              value={preference}
-              onChange={(value) => setPreference(value as ThemePreference)}
-            />
+            <div className="settings-modal__select">
+              <select
+                aria-labelledby="settings-theme-label"
+                className="settings-modal__select-input"
+                value={preference}
+                onChange={(event) =>
+                  setPreference(event.currentTarget.value as ThemePreference)
+                }
+              >
+                <option value="system">{t("System default")}</option>
+                <option value="light">{t("Light")}</option>
+                <option value="dark">{t("Dark")}</option>
+              </select>
+              <ChevronDownIcon aria-hidden="true" />
+            </div>
           </div>
         </section>
 
