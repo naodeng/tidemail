@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "animal-island-ui";
 import { MailIcon, MenuIcon, SettingsIcon } from "naive-icons";
 import { useTranslation } from "react-i18next";
@@ -16,20 +16,52 @@ export function Header() {
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!showMobileMenu) return;
+
+    const closeOnOutsidePress = (event: PointerEvent) => {
+      if (!navRef.current?.contains(event.target as Node)) {
+        setShowMobileMenu(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", closeOnOutsidePress);
+    return () =>
+      document.removeEventListener("pointerdown", closeOnOutsidePress);
+  }, [showMobileMenu]);
 
   const legalLinks = (
     <>
-      <Button type="text" size="small" onClick={() => setShowAboutModal(true)}>
+      <Button
+        type="text"
+        size="small"
+        onClick={() => {
+          setShowAboutModal(true);
+          setShowMobileMenu(false);
+        }}
+      >
         {t("About")}
       </Button>
       <Button
         type="text"
         size="small"
-        onClick={() => setShowPrivacyModal(true)}
+        onClick={() => {
+          setShowPrivacyModal(true);
+          setShowMobileMenu(false);
+        }}
       >
         {t("Privacy")}
       </Button>
-      <Button type="text" size="small" onClick={() => setShowTermsModal(true)}>
+      <Button
+        type="text"
+        size="small"
+        onClick={() => {
+          setShowTermsModal(true);
+          setShowMobileMenu(false);
+        }}
+      >
         {t("Terms")}
       </Button>
     </>
@@ -48,7 +80,14 @@ export function Header() {
             <span>tidemail</span>
           </Link>
 
-          <nav className="site-nav" aria-label="Main navigation">
+          <nav
+            ref={navRef}
+            className="site-nav"
+            aria-label={t("Main navigation")}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") setShowMobileMenu(false);
+            }}
+          >
             <div className="site-nav__links">
               {legalLinks}
               <a
@@ -68,7 +107,10 @@ export function Header() {
               icon={<SettingsIcon aria-hidden="true" />}
               aria-label={t("Settings")}
               aria-haspopup="dialog"
-              onClick={() => setShowSettingsModal(true)}
+              onClick={() => {
+                setShowMobileMenu(false);
+                setShowSettingsModal(true);
+              }}
             >
               <span className="site-settings-trigger__label">
                 {t("Settings")}
@@ -80,18 +122,24 @@ export function Header() {
               type="text"
               size="small"
               icon={<MenuIcon aria-hidden="true" />}
-              aria-label={t("Open navigation menu")}
+              aria-label={t(
+                showMobileMenu
+                  ? "Close navigation menu"
+                  : "Open navigation menu",
+              )}
               aria-expanded={showMobileMenu}
+              aria-controls={showMobileMenu ? "mobile-navigation" : undefined}
               onClick={() => setShowMobileMenu((visible) => !visible)}
             />
 
             {showMobileMenu && (
-              <div className="site-nav__mobile-links">
+              <div className="site-nav__mobile-links" id="mobile-navigation">
                 {legalLinks}
                 <a
                   href="https://github.com/naodeng/tidemail"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => setShowMobileMenu(false)}
                 >
                   GitHub
                 </a>

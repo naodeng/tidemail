@@ -1,4 +1,5 @@
-import { Modal, Select } from "animal-island-ui";
+import { Button, Modal, Select } from "animal-island-ui";
+import { CloseIcon } from "naive-icons";
 import packageMetadata from "../../../package.json";
 import { useTranslation } from "react-i18next";
 import { useTheme, type ThemePreference } from "../hooks/useTheme.tsx";
@@ -29,7 +30,18 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
       title={t("Settings")}
       width={520}
       typewriter={false}
-      footer={null}
+      footer={
+        <div className="modal-action-footer">
+          <Button
+            type="text"
+            size="small"
+            icon={<CloseIcon aria-hidden="true" />}
+            onClick={onClose}
+          >
+            {t("Close")}
+          </Button>
+        </div>
+      }
       onClose={onClose}
     >
       <div className="settings-modal">
@@ -44,28 +56,32 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
             >
               {t("Language")}
             </span>
-            <Select
-              aria-labelledby="settings-language-label"
-              options={languages}
-              value={currentLanguage}
-              onChange={(language) => void i18n.changeLanguage(language)}
-            />
+            <div className="settings-modal__select">
+              <Select
+                aria-labelledby="settings-language-label"
+                options={languages}
+                value={currentLanguage}
+                onChange={(language) => void i18n.changeLanguage(language)}
+              />
+            </div>
           </div>
 
           <div className="settings-modal__field">
             <span id="settings-theme-label" className="settings-modal__label">
               {t("Theme")}
             </span>
-            <Select
-              aria-labelledby="settings-theme-label"
-              options={[
-                { key: "system", label: t("System default") },
-                { key: "light", label: t("Light") },
-                { key: "dark", label: t("Dark") },
-              ]}
-              value={preference}
-              onChange={(value) => setPreference(value as ThemePreference)}
-            />
+            <div className="settings-modal__select">
+              <Select
+                aria-labelledby="settings-theme-label"
+                options={[
+                  { key: "system", label: t("System default") },
+                  { key: "light", label: t("Light") },
+                  { key: "dark", label: t("Dark") },
+                ]}
+                value={preference}
+                onChange={(value) => setPreference(value as ThemePreference)}
+              />
+            </div>
           </div>
         </section>
 

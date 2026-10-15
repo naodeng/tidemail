@@ -1,4 +1,6 @@
-import { Modal } from "animal-island-ui";
+import { Button, Modal } from "animal-island-ui";
+import { CloseIcon } from "naive-icons";
+import { useTranslation } from "react-i18next";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
 
 interface InfoModalProps {
@@ -14,6 +16,8 @@ export function InfoModal({
   title,
   children,
 }: InfoModalProps) {
+  const { t } = useTranslation();
+
   return (
     <Modal
       open={showModal}
@@ -21,6 +25,18 @@ export function InfoModal({
       title={title}
       width={880}
       typewriter={false}
+      footer={
+        <div className="modal-action-footer">
+          <Button
+            type="text"
+            size="small"
+            icon={<CloseIcon aria-hidden="true" />}
+            onClick={() => setShowModal(false)}
+          >
+            {t("Close")}
+          </Button>
+        </div>
+      }
       onClose={() => setShowModal(false)}
     >
       <div className="modal-scroll">{children}</div>

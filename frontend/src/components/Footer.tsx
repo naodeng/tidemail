@@ -20,7 +20,7 @@ export function Footer() {
         </p>
       </div>
 
-      <nav className="site-footer__links" aria-label="Social links">
+      <nav className="site-footer__links" aria-label={t("Social links")}>
         <a href="https://like.do" target="_blank" rel="noreferrer">
           <img src="/likedo.svg" width="24" height="24" alt="LikeDo" />
         </a>

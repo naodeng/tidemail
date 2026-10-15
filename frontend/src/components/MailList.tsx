@@ -150,14 +150,23 @@ export function MailList({
                 <span className="mail-item__heading">
                   <strong>{email.from?.name || email.messageFrom}</strong>
                   <span className="mail-item__meta">
-                    {email.from?.address}
-                    {formatDistanceToNow(
-                      new Date(email.date || email.createdAt),
-                      { addSuffix: true, locale: currentLocale },
-                    )}
+                    <span className="mail-item__sender">
+                      {email.from?.address}
+                    </span>
+                    <time
+                      className="mail-item__date"
+                      dateTime={new Date(
+                        email.date || email.createdAt,
+                      ).toISOString()}
+                    >
+                      {formatDistanceToNow(
+                        new Date(email.date || email.createdAt),
+                        { addSuffix: true, locale: currentLocale },
+                      )}
+                    </time>
                   </span>
                 </span>
-                <span className="font-semibold">{email.subject}</span>
+                <span className="mail-item__subject">{email.subject}</span>
                 <span className="mail-item__preview">
                   {(email.text || email.html || "").substring(0, 300)}
                 </span>
@@ -174,7 +183,7 @@ export function MailList({
       <div className="mail-list-header">
         <div className="mail-list-header__title">
           <MailIcon size={22} aria-hidden="true" />
-          <h2>{t("INBOX")}</h2>
+          <h2>{t("Inbox")}</h2>
           {isAddressCreated && emails.length > 0 && !selectedEmail && (
             <Badge count={emails.length} color="app-teal" />
           )}
@@ -202,7 +211,7 @@ export function MailList({
                 onClick={onExpand}
               />
               <Button
-                type="default"
+                type="primary"
                 size="small"
                 danger
                 icon={<TrashIcon aria-hidden="true" />}
@@ -243,7 +252,7 @@ export function MailList({
                     onChange={handleSelectAll}
                   />
                   <Button
-                    type="default"
+                    type="primary"
                     size="small"
                     danger
                     icon={<TrashIcon aria-hidden="true" />}

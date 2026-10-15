@@ -19,9 +19,22 @@
   --animal-bg-color-secondary: #28231d;
   --animal-bg-color-disabled: #302b24;
   --animal-mask-bg: rgb(0 0 0 / 65%);
+  --animal-error-color: #ab3939;
+  --animal-error-color-hover: #963131;
+  --animal-error-color-active: #7d2828;
   --animal-shadow-sm: 0 2px 4px rgb(0 0 0 / 20%);
   --animal-shadow-base: 0 3px 10px rgb(0 0 0 / 30%);
   --animal-shadow-lg: 0 8px 24px rgb(0 0 0 / 38%);
+}
+
+:root[data-theme="light"] {
+  --animal-text-color-secondary: #715b40;
+  --animal-text-color-muted: #715b40;
+  --animal-error-color: #ab3939;
+  --animal-error-color-hover: #963131;
+  --animal-error-color-active: #7d2828;
+  --tidemail-link-color: #076e65;
+  --tidemail-link-hover: #055a53;
 }
 
 html {
@@ -40,13 +53,15 @@ body {
 }
 
 a {
-  color: var(--animal-primary-color);
+  color: var(--tidemail-link-color, var(--animal-primary-color));
   text-decoration: none;
   transition: color var(--animal-motion-duration-base) var(--animal-motion-ease);
 }
 
 a:hover {
-  color: var(--animal-primary-color-hover);
+  color: var(--tidemail-link-hover, var(--animal-primary-color-hover));
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 button,
@@ -65,9 +80,15 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
+:root[data-theme="light"]
+  :is(button, a, input, select, textarea):focus-visible {
+  outline-color: #076e65;
+}
+
 .app-shell {
   display: flex;
   min-height: 100vh;
+  min-height: 100dvh;
   flex-direction: column;
   background: var(--animal-bg-color);
 }
@@ -75,6 +96,7 @@ textarea:focus-visible {
 .app-loading {
   display: grid;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 24px;
   place-items: center;
   background: var(--animal-bg-color);
@@ -82,6 +104,7 @@ textarea:focus-visible {
 
 .app-loading-card {
   width: min(420px, 100%);
+  padding: 24px;
 }
 
 .site-header {
@@ -102,6 +125,12 @@ textarea:focus-visible {
   justify-content: space-between;
   gap: 20px;
   margin: 0 auto;
+}
+
+@supports (background: color-mix(in srgb, white 90%, transparent)) {
+  .site-header {
+    background: color-mix(in srgb, var(--animal-bg-color) 92%, transparent);
+  }
 }
 
 .site-brand {
@@ -157,6 +186,12 @@ textarea:focus-visible {
   margin-left: 6px;
 }
 
+.site-settings-trigger,
+.site-nav__mobile-toggle {
+  min-width: 44px;
+  min-height: 44px;
+}
+
 .settings-modal {
   display: grid;
   gap: 22px;
@@ -178,8 +213,25 @@ textarea:focus-visible {
   font-weight: 700;
 }
 
-.settings-modal__field .wrapper {
+.settings-modal__select {
+  position: relative;
   width: 100%;
+}
+
+.settings-modal__select > div {
+  width: 100%;
+}
+
+.settings-modal__select [role="listbox"] {
+  left: 0 !important;
+  right: auto !important;
+  top: calc(100% + 6px) !important;
+  bottom: auto !important;
+  width: 100% !important;
+  min-width: 100% !important;
+  margin: 0 !important;
+  transform: none !important;
+  box-sizing: border-box;
 }
 
 .settings-modal__information {
@@ -220,6 +272,18 @@ textarea:focus-visible {
   display: none;
 }
 
+@keyframes nav-menu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .site-footer {
   display: flex;
   width: min(1280px, calc(100% - 40px));
@@ -251,12 +315,17 @@ textarea:focus-visible {
 
 .site-unlock-card {
   width: min(440px, 100%);
+  padding: 24px;
 }
 
 .site-unlock-card form {
   display: grid;
   gap: 16px;
   margin-top: 20px;
+}
+
+.site-unlock-card .form-field {
+  margin: 0;
 }
 
 .site-unlock-card h1,
@@ -276,14 +345,18 @@ textarea:focus-visible {
   color: var(--animal-error-color);
 }
 
+:root[data-theme="dark"] .site-unlock-card [role="alert"] {
+  color: #ff9a9a;
+}
+
 .home-page {
   width: min(1280px, calc(100% - 40px));
   flex: 1;
-  margin: 32px auto 24px;
+  margin: 36px auto 32px;
 }
 
 .home-heading {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .home-title {
@@ -293,18 +366,21 @@ textarea:focus-visible {
   font-size: clamp(26px, 4vw, 36px);
   font-weight: 800;
   line-height: 1.15;
+  letter-spacing: -0.015em;
 }
 
 .home-heading p {
   margin: 12px 0 0;
   color: var(--animal-text-color-secondary);
+  font-size: var(--animal-font-size-base);
+  line-height: 1.6;
 }
 
 .home-layout {
   display: grid;
   grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
   align-items: start;
-  gap: 20px;
+  gap: 24px;
 }
 
 .home-sidebar {
@@ -316,6 +392,15 @@ textarea:focus-visible {
 .home-sidebar__card,
 .inbox-card {
   min-width: 0;
+}
+
+.home-sidebar__card {
+  padding: 18px 20px;
+}
+
+.inbox-card {
+  overflow: hidden;
+  padding: 0;
 }
 
 .home-sidebar__card > section {
@@ -365,6 +450,20 @@ textarea:focus-visible {
   border: 1px solid var(--animal-border-color-light);
   border-radius: var(--animal-border-radius-base);
   background: var(--animal-bg-color);
+  transition:
+    border-color var(--animal-motion-duration-base) var(--animal-motion-ease),
+    background-color var(--animal-motion-duration-base)
+      var(--animal-motion-ease);
+}
+
+.address-card:focus-within {
+  border-color: var(--animal-primary-color-active);
+}
+
+.address-card > button,
+.countdown-row > button {
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .address-card__value {
@@ -428,11 +527,11 @@ textarea:focus-visible {
 
 .mail-list-header {
   display: flex;
-  min-height: 64px;
+  min-height: 68px;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 12px 18px;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--animal-border-color-light);
 }
 
@@ -452,6 +551,9 @@ textarea:focus-visible {
   margin: 0 6px 0 0;
   color: var(--animal-text-color);
   font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
 }
 
 .mail-list-body {
@@ -497,14 +599,35 @@ textarea:focus-visible {
 }
 
 .mail-item__heading strong {
+  min-width: 0;
   overflow: hidden;
+  flex: 1;
   color: var(--animal-text-color);
   text-overflow: ellipsis;
 }
 
 .mail-item__meta {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   color: var(--animal-text-color-secondary);
   font-size: var(--animal-font-size-sm);
+}
+
+.mail-item__sender {
+  min-width: 0;
+  overflow: hidden;
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mail-item__date {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .mail-item__preview {
@@ -514,8 +637,15 @@ textarea:focus-visible {
   font-size: var(--animal-font-size-sm);
   font-weight: 400;
   text-align: left;
+  overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+
+.mail-item__subject {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: 700;
 }
 
 .mail-empty-state {
@@ -557,6 +687,10 @@ textarea:focus-visible {
   overflow-wrap: anywhere;
 }
 
+.mail-detail-header__sender strong {
+  overflow-wrap: anywhere;
+}
+
 .mail-detail-header time {
   color: var(--animal-text-color-secondary);
   font-size: var(--animal-font-size-sm);
@@ -566,6 +700,7 @@ textarea:focus-visible {
   display: block;
   width: 100%;
   min-height: 60vh;
+  min-height: 60dvh;
   border: 1px solid var(--animal-border-color-light);
   border-radius: var(--animal-border-radius-base);
   background: var(--animal-bg-color);
@@ -573,8 +708,29 @@ textarea:focus-visible {
 
 .modal-scroll {
   max-height: min(70vh, 720px);
+  max-height: min(70dvh, 720px);
   overflow: auto;
   padding: 8px 4px;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  text-align: left;
+}
+
+.modal-scroll > div > div,
+.modal-scroll > p {
+  max-width: 70ch;
+  margin-inline: auto;
+}
+
+.modal-scroll p {
+  font-size: var(--animal-font-size-base);
+  font-weight: 500;
+  line-height: 1.75;
+}
+
+.modal-scroll h2 {
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.3;
 }
 
 .app-textarea {
@@ -597,6 +753,48 @@ textarea:focus-visible {
   color: var(--animal-text-color-secondary);
 }
 
+.modal-scroll,
+.modal-form-content,
+.settings-modal,
+.modal-action-footer {
+  --animal-primary-color: #076e65;
+  --animal-primary-color-hover: #055a53;
+  --animal-primary-color-active: #00564f;
+  --animal-primary-color-bg: #e6f9f6;
+  --animal-text-color: #794f27;
+  --animal-text-color-secondary: #715b40;
+  --animal-text-color-muted: #715b40;
+  --animal-text-color-disabled: #8b775b;
+  --animal-border-color: #dcd8d1;
+  --animal-border-color-hover: #827157;
+  --animal-border-color-light: #e8e2d6;
+  --animal-bg-color: #f8f8f0;
+  --animal-bg-color-secondary: #f0e8d8;
+  --animal-bg-color-disabled: #f0ece2;
+  color: var(--animal-text-color);
+}
+
+.modal-action-footer {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.modal-scroll h2,
+.modal-scroll p,
+.modal-form-content p,
+.settings-modal,
+.settings-modal__label {
+  color: var(--animal-text-color);
+}
+
+.modal-form-content > p:first-child,
+.modal-form-content .form-note,
+.settings-modal__information,
+.settings-modal__information-row .settings-modal__label {
+  color: var(--animal-text-color-secondary);
+}
+
 .modal-form {
   display: grid;
   gap: 16px;
@@ -612,8 +810,23 @@ textarea:focus-visible {
   margin: 0;
 }
 
+.modal-form__row .form-field {
+  min-width: 0;
+}
+
 .password-toast-card {
   width: min(440px, calc(100vw - 32px));
+}
+
+.password-toast-card {
+  --animal-primary-color: #076e65;
+  --animal-primary-color-hover: #055a53;
+  --animal-primary-color-active: #00564f;
+  --animal-text-color: #794f27;
+  --animal-text-color-secondary: #715b40;
+  --animal-text-color-muted: #715b40;
+  --animal-bg-color: #f8f8f0;
+  --animal-bg-color-secondary: #f0e8d8;
 }
 
 .password-toast-card__heading,
@@ -625,6 +838,11 @@ textarea:focus-visible {
 
 .password-toast-card__heading {
   justify-content: space-between;
+}
+
+.password-toast-card__heading > button {
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .password-toast-card__title h3 {
@@ -659,6 +877,8 @@ textarea:focus-visible {
     border: 1px solid var(--animal-border-color-light);
     border-radius: var(--animal-border-radius-lg);
     background: var(--animal-bg-color);
+    animation: nav-menu-enter var(--animal-motion-duration-base)
+      var(--animal-motion-ease) both;
   }
 
   .site-settings-trigger__label {
@@ -683,6 +903,11 @@ textarea:focus-visible {
     max-height: none;
     min-height: 320px;
   }
+
+  .mail-list-header__actions > button {
+    min-width: 44px;
+    min-height: 44px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -699,10 +924,19 @@ textarea:focus-visible {
   }
 
   .mail-detail-header,
-  .mail-item__heading,
+  .mail-item__heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .mail-item__meta {
     align-items: flex-start;
     flex-direction: column;
+    gap: 4px;
+  }
+
+  .mail-item__date {
+    align-self: flex-end;
   }
 
   .mail-list-header {
@@ -712,5 +946,13 @@ textarea:focus-visible {
 
   .mail-list-header__actions {
     flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .address-card,
+  .site-nav__mobile-links {
+    animation: none;
+    transition: none;
   }
 }

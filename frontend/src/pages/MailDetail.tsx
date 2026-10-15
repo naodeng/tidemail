@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { enUS, zhCN } from "date-fns/locale";
 import { format } from "date-fns/format";
 import { UserIcon } from "naive-icons";
 import type { Email } from "../database_types";
@@ -8,7 +9,10 @@ interface MailDetailProps {
 }
 
 export function MailDetail({ email }: MailDetailProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = (i18n.resolvedLanguage ?? i18n.language).startsWith("zh")
+    ? zhCN
+    : enUS;
   const senderName = email.from?.name || email.messageFrom;
   const sentAt = email.date || email.createdAt;
 
@@ -26,7 +30,7 @@ export function MailDetail({ email }: MailDetailProps) {
           </div>
         </div>
         <time dateTime={new Date(sentAt).toISOString()}>
-          {format(new Date(sentAt), "PPpp")}
+          {format(new Date(sentAt), "PPpp", { locale })}
         </time>
       </header>
 
@@ -34,7 +38,7 @@ export function MailDetail({ email }: MailDetailProps) {
         srcDoc={email.html || `<pre>${email.text || ""}</pre>`}
         className="mail-detail-frame"
         sandbox="allow-popups"
-        title="Email content"
+        title={t("Email content")}
       />
     </article>
   );
