@@ -72,7 +72,7 @@ async function mockWorker(
   await page.route("**/api/**", async (route) => {
     const request = route.request();
     const requestUrl = new URL(request.url());
-    if (requestUrl.origin !== "http://127.0.0.1:4173") {
+    if (requestUrl.origin !== new URL(page.url()).origin) {
       return route.continue();
     }
     const pathname = requestUrl.pathname;
@@ -211,7 +211,18 @@ test("switches theme, follows the system, and keeps language choices to English 
   await page.getByRole("button", { name: "Settings" }).click();
   const themeSelect = page.getByRole("combobox", { name: "Theme" });
   await themeSelect.click();
-  await expect(page.getByRole("listbox", { name: "Theme" })).toBeVisible();
+  const themeOptions = page.getByRole("listbox", { name: "Theme" });
+  await expect(themeOptions).toBeVisible();
+  const themeSelectBox = await themeSelect.boundingBox();
+  const themeOptionsBox = await themeOptions.boundingBox();
+  expect(themeSelectBox).not.toBeNull();
+  expect(themeOptionsBox).not.toBeNull();
+  expect(themeOptionsBox!.y).toBeGreaterThanOrEqual(
+    themeSelectBox!.y + themeSelectBox!.height,
+  );
+  expect(themeOptionsBox!.width).toBeGreaterThanOrEqual(
+    themeSelectBox!.width - 1,
+  );
   await expect(page.getByRole("option", { name: "Dark" })).toBeVisible();
   await page.getByRole("option", { name: "Dark" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
@@ -237,4 +248,22 @@ test("switches theme, follows the system, and keeps language choices to English 
   await expect(
     page.getByRole("heading", { name: "虚拟临时邮箱" }),
   ).toBeVisible();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobileThemeSelect = page.getByRole("combobox", { name: "主题" });
+  await mobileThemeSelect.click();
+  const mobileThemeOptions = page.getByRole("listbox", { name: "主题" });
+  await expect(mobileThemeOptions).toBeVisible();
+  const mobileSelectBox = await mobileThemeSelect.boundingBox();
+  const mobileOptionsBox = await mobileThemeOptions.boundingBox();
+  expect(mobileSelectBox).not.toBeNull();
+  expect(mobileOptionsBox).not.toBeNull();
+  expect(mobileOptionsBox!.y).toBeGreaterThanOrEqual(
+    mobileSelectBox!.y + mobileSelectBox!.height,
+  );
+  expect(mobileOptionsBox!.width).toBeGreaterThanOrEqual(
+    mobileSelectBox!.width - 1,
+  );
+  await expect(page.getByRole("option", { name: "浅色" })).toBeVisible();
+  await page.getByRole("option", { name: "跟随系统" }).click();
 });
