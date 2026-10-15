@@ -1,10 +1,10 @@
 {
   "name": "tidemail",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.1.0",
-  "description": "TideMail is a lightweight temporary email service built with Cloudflare Workers.",
+  "description": "tidemail is a lightweight temporary email service built with Cloudflare Workers.",
   "scripts": {
     "build": "pnpm --filter frontend run build",
     "test": "pnpm test:coverage && pnpm test:core-coverage && pnpm test:e2e",
