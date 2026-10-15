@@ -208,6 +208,7 @@ test("switches theme, follows the system, and keeps language choices to English 
   await mockWorker(page);
   await page.goto("/");
 
+  await page.getByRole("button", { name: "Settings" }).click();
   const themeSelect = page.getByRole("combobox", { name: "Theme" });
   await themeSelect.click();
   await page.getByText("Dark", { exact: true }).click();
