@@ -188,22 +188,14 @@ export function getBearerToken(authorizationHeader?: string): string | null {
 }
 
 export function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (character) => {
-    switch (character) {
-      case "&":
-        return "&amp;";
-      case "<":
-        return "&lt;";
-      case ">":
-        return "&gt;";
-      case '"':
-        return "&quot;";
-      case "'":
-        return "&#39;";
-      default:
-        return character;
-    }
-  });
+  const escaped: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  };
+  return value.replace(/[&<>"']/g, (character) => escaped[character]);
 }
 
 function senderAttribution(message: OutgoingEmail): string {

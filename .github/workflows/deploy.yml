@@ -53,6 +53,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+
       - name: Test
         run: pnpm test
 
@@ -66,12 +69,15 @@ jobs:
       # 配置 Wrangler (替换占位符)
       - name: Configure Wrangler
         run: |
+          [ -n "${COOKIES_SECRET}" ] || { echo "COOKIES_SECRET is required"; exit 1; }
+          if { [ -n "${TURNSTILE_KEY}" ] && [ -z "${TURNSTILE_SECRET}" ]; } || { [ -z "${TURNSTILE_KEY}" ] && [ -n "${TURNSTILE_SECRET}" ]; }; then
+            echo "TURNSTILE_KEY and TURNSTILE_SECRET must be configured together"
+            exit 1
+          fi
           sed -i "s#\${D1_DATABASE_ID}#${D1_DATABASE_ID}#g" wrangler.toml
           sed -i "s#\${D1_DATABASE_NAME}#${D1_DATABASE_NAME}#g" wrangler.toml
           sed -i "s#\${EMAIL_DOMAIN}#${EMAIL_DOMAIN}#g" wrangler.toml
-          sed -i "s#\${COOKIES_SECRET}#${COOKIES_SECRET}#g" wrangler.toml
           sed -i "s#\${TURNSTILE_KEY}#${TURNSTILE_KEY}#g" wrangler.toml
-          sed -i "s#\${TURNSTILE_SECRET}#${TURNSTILE_SECRET}#g" wrangler.toml
           if [ -n "${SEND_CHANNEL}" ]; then
             case "${SEND_CHANNEL}" in
               resend)
@@ -95,26 +101,6 @@ jobs:
             sed -i '/^SEND_CHANNEL = /d' wrangler.toml
             sed -i '/^SENDER_EMAIL = /d' wrangler.toml
           fi
-          if [ -n "${PASSWORD}" ]; then
-            sed -i "s#\${PASSWORD}#${PASSWORD}#g" wrangler.toml
-          else
-            sed -i '/^PASSWORD = /d' wrangler.toml
-          fi
-          if [ -n "${API_RATE_LIMIT_PER_MINUTE}" ]; then
-            sed -i "s#\${API_RATE_LIMIT_PER_MINUTE}#${API_RATE_LIMIT_PER_MINUTE}#g" wrangler.toml
-          else
-            sed -i '/^API_RATE_LIMIT_PER_MINUTE = /d' wrangler.toml
-          fi
-          if [ -n "${SHOW_AFF}" ]; then
-            sed -i "s#\${SHOW_AFF}#${SHOW_AFF}#g" wrangler.toml
-          else
-            sed -i '/^SHOW_AFF = /d' wrangler.toml
-          fi
-          if [ "$(printf '%s' "${ENABLE_OPENAPI}" | tr '[:upper:]' '[:lower:]')" = "true" ]; then
-            sed -i 's/^ENABLE_OPENAPI = .*/ENABLE_OPENAPI = "true"/' wrangler.toml
-          else
-            sed -i 's/^ENABLE_OPENAPI = .*/ENABLE_OPENAPI = "false"/' wrangler.toml
-          fi
           if [ -n "${SEND_RATE_LIMIT_PER_MINUTE}" ]; then
             sed -i "s#\${SEND_RATE_LIMIT_PER_MINUTE}#${SEND_RATE_LIMIT_PER_MINUTE}#g" wrangler.toml
           else
@@ -133,9 +119,6 @@ jobs:
           TURNSTILE_KEY: ${{ secrets.TURNSTILE_KEY }}
           TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          API_RATE_LIMIT_PER_MINUTE: ${{ secrets.API_RATE_LIMIT_PER_MINUTE }}
-          SHOW_AFF: ${{ secrets.SHOW_AFF }}
-          ENABLE_OPENAPI: ${{ secrets.ENABLE_OPENAPI }}
           SEND_CHANNEL: ${{ secrets.SEND_CHANNEL }}
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SEND_RATE_LIMIT_PER_MINUTE: ${{ secrets.SEND_RATE_LIMIT_PER_MINUTE }}
@@ -160,21 +143,29 @@ jobs:
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
           wranglerVersion: "4.111.0"
 
-      - name: Configure sender secrets
+      - name: Configure Worker secrets
+        shell: bash
         run: |
-          if [ -z "${SEND_CHANNEL}" ]; then
-            exit 0
-          fi
-          printf '%s' "${MAILBOX_TOKEN_SECRET}" | pnpm exec wrangler secret put MAILBOX_TOKEN_SECRET
-          if [ -n "${RESEND_API_KEY}" ]; then
-            printf '%s' "${RESEND_API_KEY}" | pnpm exec wrangler secret put RESEND_API_KEY
-          fi
-          if [ -n "${MAILCHANNELS_API_KEY}" ]; then
-            printf '%s' "${MAILCHANNELS_API_KEY}" | pnpm exec wrangler secret put MAILCHANNELS_API_KEY
-          fi
+          set -euo pipefail
+          node --input-type=module - <<'NODE' | pnpm exec wrangler secret bulk
+          const env = process.env;
+          if (!env.COOKIES_SECRET) throw new Error('COOKIES_SECRET is required');
+          const secrets = {
+            COOKIES_SECRET: env.COOKIES_SECRET,
+            TURNSTILE_SECRET: env.TURNSTILE_SECRET || null,
+            PASSWORD: env.PASSWORD || null,
+            MAILBOX_TOKEN_SECRET: env.SEND_CHANNEL ? env.MAILBOX_TOKEN_SECRET : null,
+            RESEND_API_KEY: env.SEND_CHANNEL === 'resend' ? env.RESEND_API_KEY : null,
+            MAILCHANNELS_API_KEY: env.SEND_CHANNEL === 'mailchannels' ? env.MAILCHANNELS_API_KEY : null,
+          };
+          process.stdout.write(JSON.stringify(secrets));
+          NODE
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          COOKIES_SECRET: ${{ secrets.COOKIES_SECRET }}
+          TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
+          PASSWORD: ${{ secrets.PASSWORD }}
           SEND_CHANNEL: ${{ secrets.SEND_CHANNEL }}
           MAILBOX_TOKEN_SECRET: ${{ secrets.MAILBOX_TOKEN_SECRET }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

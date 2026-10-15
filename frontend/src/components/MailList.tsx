@@ -1,18 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { formatDistanceToNow, type Locale } from "date-fns";
-import {
-  zhCN,
-  enUS,
-  fr,
-  ja,
-  de,
-  ko,
-  zhTW,
-  it,
-  pt,
-  tr,
-  ru,
-} from "date-fns/locale";
+import { enUS, zhCN } from "date-fns/locale";
 import { Badge, Button, Card, Checkbox, Skeleton } from "animal-island-ui";
 import {
   ArrowLeftIcon,
@@ -26,21 +14,11 @@ import {
 } from "naive-icons";
 import type { Dispatch, SetStateAction } from "react";
 import type { Email } from "../database_types";
-import { SiteStats } from "./SiteStats";
 import { MailDetail } from "../pages/MailDetail";
 
 const localeMap: Record<string, Locale> = {
   zh: zhCN,
-  "zh-TW": zhTW,
   en: enUS,
-  fr,
-  ja,
-  de,
-  ko,
-  it,
-  pt,
-  tr,
-  ru,
 };
 
 interface MailListProps {
@@ -108,8 +86,13 @@ export function MailList({
 
     if (!isAddressCreated) {
       return (
-        <div className="mail-empty-state">
-          <SiteStats />
+        <div className="mail-empty-state" role="status">
+          <InboxIcon
+            className="mail-empty-state__icon"
+            size={38}
+            aria-hidden="true"
+          />
+          <p>{t("Create a temporary address to receive mail")}</p>
         </div>
       );
     }

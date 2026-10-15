@@ -7,7 +7,6 @@ colors:
   warm-surface: "#f0e8d8"
   card-cream: "#f7f3df"
   input-cream: "#fffdf7"
-  butter: "#f7cd67"
   bark: "#794f27"
   muted-bark: "#9f927d"
   soft-border: "#e8e2d6"
@@ -33,10 +32,6 @@ typography:
   title:
     fontFamily: "Nunito, Noto Sans SC, -apple-system, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif"
     fontSize: "20px"
-    fontWeight: 800
-  metric:
-    fontFamily: "Nunito, Noto Sans SC, -apple-system, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif"
-    fontSize: "clamp(18px, 3vw, 24px)"
     fontWeight: 800
 rounded:
   logo: "8px"
@@ -89,6 +84,7 @@ The interface favors familiar patterns over decoration: create an address, read 
 - Warm, low-glare paper and cream surfaces.
 - Brown text with island teal for links, focus, and selected accents.
 - Rounded controls and compact, readable inbox rows.
+- A header selector offers system, light, and dark appearance; system is the default.
 
 ## Colors
 
@@ -107,9 +103,19 @@ The palette uses one clear teal accent against warm paper, cream, and brown neut
 - **Bark** (`#794f27`): Main text and primary button labels.
 - **Muted Bark** (`#9f927d`): Supporting text and metadata.
 - **Soft Border** (`#e8e2d6`): Dividers and quiet outlines.
-- **Butter** (`#f7cd67`): Small, meaningful emphasis such as the promotion benefit card.
 
 **The Warm Contrast Rule.** Keep long-form text on warm, light surfaces; use teal as an accent, not as a large text field or page background.
+
+### Dark theme
+
+The dark palette is applied through Animal-Island-UI CSS variables when the root has `data-theme="dark"`:
+
+- Page: `#191714`; secondary surfaces: `#28231d`.
+- Main text: `#f2eadc`; secondary text: `#c4b9a7`.
+- Primary teal: `#68d8ca`; light border: `#40382f`.
+- Keep the same hierarchy and spacing as light mode; avoid pure-black panels.
+
+The preference selector has three choices: **System default**, **Light**, and **Dark**. System default follows `prefers-color-scheme`; explicit choices persist in local storage.
 
 ## Typography
 
@@ -122,9 +128,8 @@ The palette uses one clear teal accent against warm paper, cream, and brown neut
 ### Hierarchy
 
 - **Display** (800, 26–36px responsive range, line-height 1.15): The page name and primary product heading.
-- **Section** (800, 18px): Wordmark, inbox title, and promotional lead.
+- **Section** (800, 18px): Wordmark and inbox title.
 - **Title** (800, 20px): Site unlock and mailbox card headings.
-- **Metric** (800, 18–24px responsive range): Site statistics.
 - **Body** (500, 14px, line-height 1.5715): Instructions, message metadata, and documentation.
 - **Label** (600, 12px): Compact controls, status, and supporting metadata.
 
@@ -132,7 +137,7 @@ The palette uses one clear teal accent against warm paper, cream, and brown neut
 
 ## Layout
 
-The desktop shell uses a centered 1280px maximum width. The home page pairs a 280–340px mailbox panel with a flexible inbox and a 20px gap; API documentation uses a narrower 900px reading column. At 820px the mailbox and inbox stack, the header switches to its mobile menu, and modal form rows become single-column. At 560px page gutters reduce to 14px and list actions wrap. Use an 8/12/16/24px spacing rhythm.
+The desktop shell uses a centered 1280px maximum width. The home page pairs a 280–340px mailbox panel with a flexible inbox and a 20px gap. At 820px the mailbox and inbox stack, the header switches to its mobile menu, and modal form rows become single-column. At 560px page gutters reduce to 14px and list actions wrap. Use an 8/12/16/24px spacing rhythm.
 
 ## Elevation & Depth
 
@@ -168,9 +173,9 @@ Cards use softly rounded 20px corners; compact buttons use a 16px radius, while 
 - **Focus:** Visible teal focus outline.
 - **Error / Disabled:** Keep library error and disabled states; do not express errors only through color.
 
-### Navigation
+### Navigation and preferences
 
-- **Style:** A warm translucent header with brown text links and a compact language selector. On narrow screens, expose the links through the menu button.
+- **Style:** A theme-aware header with text links, English/Simplified Chinese language selection, and a compact theme selector. On narrow screens, expose links and preference selectors through the menu button.
 
 ### Inbox Row
 
@@ -186,6 +191,6 @@ Cards use softly rounded 20px corners; compact buttons use a 16px radius, while 
 
 ### Don't:
 
-- **Don't** reintroduce a cold dark page palette, pure-black surfaces, or a second icon set.
+- **Don't** use pure-black surfaces or a second icon set.
 - **Don't** add large decorative shadows to cards or non-action content.
 - **Don't** remove security checks or mailbox actions as part of a visual cleanup.

@@ -3,15 +3,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { Button, Card, Select } from "animal-island-ui";
 import {
-  BookIcon,
-  CloudIcon,
   CodeIcon,
   CloseIcon,
-  GiftIcon,
   GlobeIcon,
   KeyIcon,
 } from "naive-icons";
@@ -30,14 +26,15 @@ import { encrypt } from "../lib/utlis.ts";
 import type { Email } from "../database_types.ts";
 import { InfoModal } from "../components/InfoModal.tsx";
 import { PasswordModal } from "../components/password.tsx";
-import { PromotionModal } from "../components/PromotionModal.tsx";
 import { SenderModal } from "../components/sender.tsx";
 import { MailDetail } from "./MailDetail.tsx";
 import { CountdownTimer } from "../components/CountdownTimer.tsx";
+import { useTheme } from "../hooks/useTheme.tsx";
 
 export function Home() {
   const config = useConfig();
   const { t } = useTranslation();
+  const { resolvedTheme } = useTheme();
   const queryClient = useQueryClient();
 
   const [address, setAddress] = useState<string | undefined>(() =>
@@ -59,11 +56,6 @@ export function Home() {
     config.emailDomain[0],
   );
   const [showEmailModal, setShowEmailModal] = useState(false);
-  const [showPromoModal, setShowPromoModal] = useState(() => {
-    if (!config.showAff) return false;
-    const hasShown = localStorage.getItem("nbility_promo_shown");
-    return !hasShown;
-  });
 
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showSenderModal, setShowSenderModal] = useState(false);
@@ -172,12 +164,6 @@ export function Home() {
     },
     [t],
   );
-
-  useEffect(() => {
-    if (!showPromoModal) {
-      localStorage.setItem("nbility_promo_shown", "true");
-    }
-  }, [showPromoModal]);
 
   useEffect(() => {
     if (emails.length > 0 && !hasReceivedEmail) {
@@ -365,17 +351,6 @@ export function Home() {
             {t("Privacy friendly")} · {t("Valid for 1 Day")} ·{" "}
             {t("100% Run on Cloudflare")}
           </p>
-          {config.showAff && (
-            <Button
-              type="text"
-              size="small"
-              className="home-promo-trigger"
-              icon={<GiftIcon aria-hidden="true" />}
-              onClick={() => setShowPromoModal(true)}
-            >
-              TideMail & Nbility 联动注册送 Claude Code、Codex 免费额度
-            </Button>
-          )}
         </section>
 
         <div className="home-layout">
@@ -385,20 +360,12 @@ export function Home() {
                 <li>
                   <CodeIcon size={18} aria-hidden="true" />
                   <a
-                    href="https://github.com/oiov/vmail"
+                    href="https://github.com/naodeng/vmail"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {t("Open Source")}
                   </a>
-                </li>
-                <li>
-                  <CloudIcon size={18} aria-hidden="true" />
-                  <span>{t("Stable - 1M+ emails processed")}</span>
-                </li>
-                <li>
-                  <BookIcon size={18} aria-hidden="true" />
-                  <Link to="/api-docs">{t("Open RESTful API")}</Link>
                 </li>
                 <li>
                   <GlobeIcon size={18} aria-hidden="true" />
@@ -453,7 +420,7 @@ export function Home() {
                           className="w-full"
                           siteKey={config.turnstileKey}
                           onSuccess={setTurnstileToken}
-                          options={{ theme: "light", size: "flexible" }}
+                          options={{ theme: resolvedTheme, size: "flexible" }}
                         />
                       </div>
                     </div>
@@ -527,12 +494,6 @@ export function Home() {
         >
           <MailDetail email={selectedEmail} />
         </InfoModal>
-      )}
-      {config.showAff && (
-        <PromotionModal
-          open={showPromoModal}
-          onClose={() => setShowPromoModal(false)}
-        />
       )}
     </>
   );

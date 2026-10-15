@@ -20,8 +20,8 @@ export function Terms() {
           information, ensuring the protection of your privacy. Our service
           supports the selection of multiple domain names, providing you with
           the convenience of using it in various scenarios. Additionally,
-          TideMail operates on the Cloudflare network, guaranteeing a
-          super-fast experience.
+          TideMail operates on the Cloudflare network, guaranteeing a super-fast
+          experience.
         </p>
 
         <h2 className="mt-8 text-2xl font-bold" id="Storage of Emails">
@@ -32,10 +32,10 @@ export function Terms() {
           Mainland. We apologize for any inconvenience caused.
         </p>
         <p className="mt-4">
-          2.2 Copyright: All copyrights related to Vmail.DEV and its services
-          belong to Vmail.DEV. You may not copy, reproduce, distribute, modify,
-          or create derivative works of Vmail.DEV or any part thereof without
-          explicit permission from Vmail.DEV.
+          2.2 Copyright: All copyrights related to TideMail and its services
+          belong to their respective owners. You may not copy, reproduce,
+          distribute, modify, or create derivative works without the relevant
+          owner's permission.
         </p>
 
         <h2 className="mt-8 text-2xl font-bold" id="Deletion of Emails">
@@ -68,8 +68,8 @@ export function Terms() {
           4. Disclaimer of Warranty
         </h2>
         <p className="mt-4">
-          TideMail is provided on an "as is" and "as available" basis. We do
-          not warrant that our services will be uninterrupted, error-free, or
+          TideMail is provided on an "as is" and "as available" basis. We do not
+          warrant that our services will be uninterrupted, error-free, or
           secure. Your use of TideMail is at your own risk, and we disclaim all
           warranties, whether express or implied, including but not limited to
           warranties of merchantability, fitness for a particular purpose, and

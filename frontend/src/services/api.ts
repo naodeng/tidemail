@@ -123,27 +123,6 @@ export async function refreshMailboxToken(
   return data.mailboxToken;
 }
 
-// 站点统计数据类型
-export interface StatsSnapshot {
-  totalAddressesCreated: number;
-  totalEmailsReceived: number;
-  totalApiCalls: number;
-  totalApiKeysCreated: number;
-}
-
-export interface SiteStats {
-  totals: StatsSnapshot;
-}
-
-// 获取站点统计数据
-export async function getSiteStats(): Promise<SiteStats> {
-  const response = await fetch(`${API_BASE_URL}/stats`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch site stats");
-  }
-  return response.json();
-}
-
 export interface UnlockStatusResponse {
   unlocked: boolean;
   sitePasswordEnabled: boolean;

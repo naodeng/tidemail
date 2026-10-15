@@ -4,11 +4,14 @@ import App, { LoadingScreen } from "./App.tsx";
 import "./index.css";
 import "animal-island-ui/style";
 import "./i18n.ts";
+import { ThemeProvider } from "./hooks/useTheme.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <React.Suspense fallback={<LoadingScreen />}>
-      <App />
-    </React.Suspense>
+    <ThemeProvider>
+      <React.Suspense fallback={<LoadingScreen />}>
+        <App />
+      </React.Suspense>
+    </ThemeProvider>
   </React.StrictMode>,
 );

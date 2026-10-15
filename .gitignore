@@ -11,3 +11,6 @@ fly.toml
 docs/superpowers
 frontend/build
 .wrangler
+wrangler.local.toml
+playwright-report
+test-results

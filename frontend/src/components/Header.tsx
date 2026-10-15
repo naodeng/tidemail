@@ -7,23 +7,16 @@ import { About } from "../pages/About.tsx";
 import { Privacy } from "../pages/Privacy.tsx";
 import { Terms } from "../pages/Terms.tsx";
 import { InfoModal } from "./InfoModal.tsx";
+import { useTheme, type ThemePreference } from "../hooks/useTheme.tsx";
 
 const languages = [
   { code: "zh", name: "简体中文" },
   { code: "en", name: "English" },
-  { code: "ja", name: "日本語" },
-  { code: "ko", name: "한국어" },
-  { code: "fr", name: "Français" },
-  { code: "de", name: "Deutsch" },
-  { code: "it", name: "Italiano" },
-  { code: "pt", name: "Português" },
-  { code: "ru", name: "Русский" },
-  { code: "tr", name: "Türkçe" },
-  { code: "zh-TW", name: "繁體中文" },
 ];
 
 export function Header() {
   const { t, i18n } = useTranslation();
+  const { preference, setPreference } = useTheme();
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [showPrivacyModal, setShowPrivacyModal] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -33,6 +26,37 @@ export function Header() {
     languages.find(({ code }) => code === i18n.language) ??
     languages.find(({ code }) => i18n.language.startsWith(`${code}-`)) ??
     languages[0];
+
+  const renderLanguageSelect = () => (
+    <div className="site-language-select">
+      <Select
+        aria-label={t("Language")}
+        options={languages.map(({ code, name }) => ({
+          key: code,
+          label: name,
+        }))}
+        value={currentLanguage.code}
+        onChange={(code) => void i18n.changeLanguage(code)}
+      />
+    </div>
+  );
+
+  const renderThemeSelect = () => (
+    <div className="site-theme-select">
+      <Select
+        aria-label={t("Theme")}
+        options={[
+          { key: "system", label: t("System default") },
+          { key: "light", label: t("Light") },
+          { key: "dark", label: t("Dark") },
+        ]}
+        value={preference}
+        onChange={(value) =>
+          setPreference(value as ThemePreference)
+        }
+      />
+    </div>
+  );
 
   const legalLinks = (
     <>
@@ -67,9 +91,6 @@ export function Header() {
 
           <nav className="site-nav" aria-label="Main navigation">
             <div className="site-nav__links">
-              <Link to="/api-docs" className="site-nav__api-link">
-                {t("API Documentation")}
-              </Link>
               {legalLinks}
               <a
                 className="site-github-link"
@@ -81,16 +102,9 @@ export function Header() {
               </a>
             </div>
 
-            <div className="site-language-select">
-              <Select
-                aria-label="Language"
-                options={languages.map(({ code, name }) => ({
-                  key: code,
-                  label: name,
-                }))}
-                value={currentLanguage.code}
-                onChange={(code) => void i18n.changeLanguage(code)}
-              />
+            <div className="site-nav__preferences site-nav__preferences--desktop">
+              {renderLanguageSelect()}
+              {renderThemeSelect()}
             </div>
 
             <Button
@@ -105,9 +119,6 @@ export function Header() {
 
             {showMobileMenu && (
               <div className="site-nav__mobile-links">
-                <Link to="/api-docs" onClick={() => setShowMobileMenu(false)}>
-                  {t("API Documentation")}
-                </Link>
                 {legalLinks}
                 <a
                   href="https://github.com/naodeng/vmail"
@@ -116,6 +127,10 @@ export function Header() {
                 >
                   GitHub
                 </a>
+                <div className="site-nav__mobile-preferences">
+                  {renderLanguageSelect()}
+                  {renderThemeSelect()}
+                </div>
               </div>
             )}
           </nav>

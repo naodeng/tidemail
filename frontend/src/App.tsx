@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Card, Skeleton } from "animal-island-ui";
 import axios from "axios";
 import { lazy, useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ConfigContext, AppConfig } from "./hooks/useConfig.ts";
 import { getUnlockStatus, unlockSite } from "./services/api.ts";
 import { SiteUnlock } from "./components/SiteUnlock.tsx";
@@ -10,9 +10,6 @@ import { Layout } from "./Layout.tsx";
 
 const Home = lazy(() =>
   import("./pages/Home.tsx").then((module) => ({ default: module.Home })),
-);
-const ApiDocs = lazy(() =>
-  import("./pages/ApiDocs.tsx").then((module) => ({ default: module.ApiDocs })),
 );
 
 const queryClient = new QueryClient();
@@ -94,7 +91,7 @@ function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Home />} />
-              <Route path="/api-docs" element={<ApiDocs />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>
         </BrowserRouter>

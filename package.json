@@ -7,10 +7,14 @@
   "description": "TideMail is a lightweight temporary email service built with Cloudflare Workers.",
   "scripts": {
     "build": "pnpm --filter frontend run build",
-    "test": "node --test worker/src/*.test.ts",
+    "test": "pnpm test:coverage && pnpm test:core-coverage && pnpm test:e2e",
+    "test:unit": "node --test worker/src/*.test.ts worker/src/database/*.test.ts frontend/test/*.test.ts",
+    "test:coverage": "node --experimental-test-coverage --test-coverage-include='worker/src/**/*.ts' --test-coverage-include='frontend/src/services/api.ts' --test-coverage-lines=80 --test-coverage-functions=80 --test-coverage-branches=80 --test worker/src/*.test.ts worker/src/database/*.test.ts frontend/test/*.test.ts",
+    "test:core-coverage": "node --experimental-test-coverage --test-coverage-include='worker/src/database/dao.ts' --test-coverage-include='worker/src/database/db.ts' --test-coverage-include='worker/src/database/schema.ts' --test-coverage-include='worker/src/email.ts' --test-coverage-include='worker/src/retention.ts' --test-coverage-include='worker/src/sender.ts' --test-coverage-include='worker/src/utils.ts' --test-coverage-include='frontend/src/services/api.ts' --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 --test worker/src/*.test.ts worker/src/database/*.test.ts frontend/test/*.test.ts",
+    "test:e2e": "playwright test",
     "typecheck": "pnpm --filter frontend run typecheck",
     "deploy": "pnpm build && wrangler deploy",
-    "dev": "wrangler dev",
+    "dev": "wrangler dev --config wrangler.local.toml",
     "worker:dev": "pnpm --filter worker run dev",
     "frontend:dev": "pnpm --filter frontend run dev",
     "format": "prettier --write ."
@@ -23,9 +27,10 @@
   "author": "oiov",
   "license": "GPL-3.0-only",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "wrangler": "^4.111.0"
