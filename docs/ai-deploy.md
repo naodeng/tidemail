@@ -5,7 +5,7 @@
 ## 部署前准备
 
 - Cloudflare 账户和一个已托管到 Cloudflare 的邮箱域名。
-- 已创建 D1 数据库，并准备 `D1_DATABASE_NAME`、`D1_DATABASE_ID`、`CF_ACCOUNT_ID` 和 `CF_API_TOKEN`。
+- 使用名为 `tidemail` 的 D1 数据库，并准备 `D1_DATABASE_NAME=tidemail`、对应的 `D1_DATABASE_ID`、`CF_ACCOUNT_ID` 和 `CF_API_TOKEN`。
 - Wrangler Worker 资源名为 `tidemail`；如果将已有的 `vmail` Worker 迁移过来，先切换 Email Routing 和自定义域名路由并验证，再删除旧 Worker。
 - 账户已启用 Cloudflare Email Routing，并可将 catch-all 邮件转发给 Worker。
 

@@ -5,10 +5,10 @@ TideMail 使用 Cloudflare Workers、D1 和 Email Routing。仓库内的 GitHub 
 ## 1. 准备 Cloudflare 资源
 
 1. 准备一个 Cloudflare 账户，以及 DNS 托管在 Cloudflare 的收件域名。
-2. 在 Cloudflare 创建 D1 数据库，记录数据库名称和 ID。也可以在本地使用 Wrangler 创建：
+2. 使用名为 `tidemail` 的 D1 数据库，记录数据库 ID。当前 Cloudflare API 没有原地修改 D1 名称的字段，因此本次新建了 `tidemail` 数据库；旧数据库先保留。也可以在本地使用 Wrangler 创建：
 
    ```bash
-   pnpm exec wrangler d1 create vmail
+   pnpm exec wrangler d1 create tidemail
    ```
 
 3. 在 **Workers & Pages** 中创建一个临时 Worker，名称设为 `tidemail`。这样后续部署 Token 只需更新现有 Worker；如果由工作流新建 Worker，则 Token 需要创建 Worker 的权限。
