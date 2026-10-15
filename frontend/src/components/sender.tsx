@@ -147,7 +147,7 @@ export function SenderModal({
               ]}
               value={contentType}
               onChange={setContentType}
-              aria-label="Email format"
+              aria-label={t("Email format")}
             />
           </label>
           <label className="form-field">
