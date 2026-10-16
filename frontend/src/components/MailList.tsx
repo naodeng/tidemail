@@ -92,7 +92,7 @@ export function MailList({
       return <MailDetail email={selectedEmail} />;
     }
 
-    if (hasError) {
+    if (hasError && emails.length === 0) {
       return (
         <div className="mail-empty-state mail-empty-state--error" role="alert">
           <span className="mail-empty-state__icon">
@@ -299,7 +299,15 @@ export function MailList({
           )}
         </div>
       </div>
-      <div className="mail-list-body">{renderBody()}</div>
+      <div className="mail-list-body">
+        {hasError && emails.length > 0 && (
+          <div className="mail-refresh-error" role="alert">
+            <p>{t("Failed to get emails")}</p>
+            <span>{t("Use refresh to try again")}</span>
+          </div>
+        )}
+        {renderBody()}
+      </div>
     </section>
   );
 }
