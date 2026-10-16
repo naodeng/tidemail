@@ -267,3 +267,44 @@ test("switches theme, follows the system, and keeps language choices to English 
   await expect(page.getByRole("option", { name: "浅色" })).toBeVisible();
   await page.getByRole("option", { name: "跟随系统" }).click();
 });
+
+test("keeps the mailbox and long dialogs usable from phone to desktop widths", async ({
+  page,
+}) => {
+  await mockWorker(page);
+  await page.goto("/");
+  await openMailbox(page);
+
+  for (const [width, height] of [
+    [320, 700],
+    [390, 844],
+    [768, 1024],
+    [1024, 900],
+    [1440, 1000],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await expect
+      .poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+      .toBeLessThanOrEqual(width);
+  }
+
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.getByRole("button", { name: "Send email" }).click();
+  const senderDialog = page.getByRole("dialog");
+  await expect(
+    senderDialog.getByRole("button", { name: "Send", exact: true }),
+  ).toBeInViewport();
+  await senderDialog.getByRole("button", { name: "Cancel" }).click();
+
+  await page.getByRole("button", { name: "Open navigation menu" }).click();
+  await page.getByRole("button", { name: "Privacy" }).last().click();
+  const privacyDialog = page.getByRole("dialog");
+  await expect(privacyDialog).toBeVisible();
+  await expect
+    .poll(() =>
+      privacyDialog.locator(".modal-scroll").evaluate((element) => {
+        return element.scrollHeight > element.clientHeight;
+      }),
+    )
+    .toBe(true);
+});

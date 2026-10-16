@@ -4,7 +4,7 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import { toast } from "react-hot-toast";
-import { Button, Card, Select } from "animal-island-ui";
+import { Button, Select } from "animal-island-ui";
 import { CodeIcon, CloseIcon, GlobeIcon, KeyIcon } from "naive-icons";
 import { MailList } from "../components/MailList.tsx";
 import { CopyButton } from "../components/CopyButton.tsx";
@@ -72,14 +72,6 @@ export function Home() {
     retry: false,
   });
 
-  useEffect(() => {
-    if (emailsError) {
-      toast.error(`${t("Failed to get emails")}: ${emailsError.message}`, {
-        duration: 5000,
-      });
-    }
-  }, [emailsError, t]);
-
   const mailboxMetaSignatureRef = useRef<string | null>(null);
 
   const { data: mailboxMeta } = useQuery({
@@ -114,7 +106,7 @@ export function Home() {
     (password: string) => {
       toast(
         (toastInstance) => (
-          <Card className="password-toast-card">
+          <section className="surface-panel password-toast-card">
             <div className="password-toast-card__heading">
               <div className="password-toast-card__title">
                 <KeyIcon aria-hidden="true" />
@@ -142,7 +134,7 @@ export function Home() {
                 )}
               </p>
             </div>
-          </Card>
+          </section>
         ),
         {
           id: "password-notification",
@@ -308,7 +300,9 @@ export function Home() {
       toast.success(t("Login successful"));
     } catch (error: any) {
       // fix: 使用 i18n 翻译错误信息
-      toast.error(`${t("Login failed")}: ${t(error.message)}`);
+      toast.error(`${t("Login failed")}: ${t(error.message)}`, {
+        position: "top-center",
+      });
     } finally {
       setIsLoggingIn(false);
     }
@@ -334,6 +328,7 @@ export function Home() {
 
   // feat: 新增处理函数，用于在模态框中显示邮件
   const handleExpandEmail = () => {
+    toast.dismiss();
     setShowEmailModal(true);
   };
 
@@ -343,32 +338,29 @@ export function Home() {
         <section className="home-heading">
           <h1 className="home-title">{t("Virtual Temporary Email")}</h1>
           <p>{t("Home description")}</p>
+          <ul className="service-feature-list">
+            <li>
+              <CodeIcon size={18} aria-hidden="true" />
+              <a
+                href="https://github.com/naodeng/tidemail"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("Open Source")}
+              </a>
+            </li>
+            <li>
+              <GlobeIcon size={18} aria-hidden="true" />
+              <span>{t("Multi-domain configurable")}</span>
+            </li>
+          </ul>
         </section>
 
         <div className="home-layout">
           <aside className="home-sidebar">
-            <Card className="home-sidebar__card">
-              <ul className="service-feature-list">
-                <li>
-                  <CodeIcon size={18} aria-hidden="true" />
-                  <a
-                    href="https://github.com/naodeng/tidemail"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {t("Open Source")}
-                  </a>
-                </li>
-                <li>
-                  <GlobeIcon size={18} aria-hidden="true" />
-                  <span>{t("Multi-domain configurable")}</span>
-                </li>
-              </ul>
-            </Card>
-
-            <Card className="home-sidebar__card">
+            <section className="surface-panel home-sidebar__card">
               {address ? (
-                <section>
+                <div>
                   <h2>{t("Email address")}</h2>
                   <div className="address-card">
                     <span className="address-card__value">{address}</span>
@@ -388,9 +380,9 @@ export function Home() {
                   >
                     {t("Stop")}
                   </Button>
-                </section>
+                </div>
               ) : (
-                <section>
+                <div>
                   <h2>{t("Create temporary email")}</h2>
                   <label className="form-field">
                     {t("Domain")}
@@ -430,13 +422,16 @@ export function Home() {
                     type="text"
                     size="small"
                     icon={<KeyIcon aria-hidden="true" />}
-                    onClick={() => setShowPasswordModal(true)}
+                    onClick={() => {
+                      toast.dismiss();
+                      setShowPasswordModal(true);
+                    }}
                   >
                     {t("Have a password? Login.")}
                   </Button>
-                </section>
+                </div>
               )}
-            </Card>
+            </section>
           </aside>
 
           <section aria-label={t("Inbox")}>
@@ -445,6 +440,7 @@ export function Home() {
               emails={emails}
               isLoading={isLoading}
               isFetching={isFetching}
+              hasError={Boolean(emailsError)}
               onDelete={handleDeleteEmails}
               isDeleting={deleteMutation.isPending}
               onRefresh={handleRefresh}
@@ -460,7 +456,10 @@ export function Home() {
               onCloseDetail={handleCloseDetail}
               onExpand={handleExpandEmail}
               canSendEmails={canSendEmails}
-              onOpenSender={() => setShowSenderModal(true)}
+              onOpenSender={() => {
+                toast.dismiss();
+                setShowSenderModal(true);
+              }}
             />
           </section>
         </div>

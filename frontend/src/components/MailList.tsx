@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { formatDistanceToNow, type Locale } from "date-fns";
 import { enUS, zhCN } from "date-fns/locale";
-import { Badge, Button, Card, Checkbox, Skeleton } from "animal-island-ui";
+import { Badge, Button, Checkbox, Skeleton } from "animal-island-ui";
 import {
   ArrowLeftIcon,
   InboxIcon,
@@ -25,6 +25,7 @@ interface MailListProps {
   emails: Email[];
   isLoading: boolean;
   isFetching: boolean;
+  hasError: boolean;
   onDelete: (ids: string[]) => void;
   isDeleting: boolean;
   onRefresh: () => void;
@@ -45,6 +46,7 @@ export function MailList({
   emails,
   isLoading,
   isFetching,
+  hasError,
   onDelete,
   isDeleting,
   onRefresh,
@@ -64,6 +66,12 @@ export function MailList({
   const currentLocale =
     localeMap[i18n.resolvedLanguage ?? i18n.language] ?? enUS;
   const allSelected = emails.length > 0 && selectedIds.length === emails.length;
+  const hasAdditionalActions = Boolean(
+    selectedEmail ||
+      showViewPasswordButton ||
+      canSendEmails ||
+      (isAddressCreated && emails.length > 0),
+  );
 
   const handleSelect = (id: string, selected: boolean) => {
     setSelectedIds((previous) =>
@@ -84,14 +92,26 @@ export function MailList({
       return <MailDetail email={selectedEmail} />;
     }
 
+    if (hasError) {
+      return (
+        <div className="mail-empty-state mail-empty-state--error" role="alert">
+          <span className="mail-empty-state__icon">
+            <InboxIcon size={38} aria-hidden="true" />
+          </span>
+          <p>{t("Failed to get emails")}</p>
+          <span className="mail-empty-state__hint">
+            {t("Use refresh to try again")}
+          </span>
+        </div>
+      );
+    }
+
     if (!isAddressCreated) {
       return (
         <div className="mail-empty-state" role="status">
-          <InboxIcon
-            className="mail-empty-state__icon"
-            size={38}
-            aria-hidden="true"
-          />
+          <span className="mail-empty-state__icon">
+            <InboxIcon size={38} aria-hidden="true" />
+          </span>
           <p>{t("Create a temporary address to receive mail")}</p>
         </div>
       );
@@ -109,12 +129,13 @@ export function MailList({
     if (emails.length === 0) {
       return (
         <div className="mail-empty-state" role="status">
-          <InboxIcon
-            className="mail-empty-state__icon"
-            size={38}
-            aria-hidden="true"
-          />
+          <span className="mail-empty-state__icon">
+            <InboxIcon size={38} aria-hidden="true" />
+          </span>
           <p>{t("Waiting for emails...")}</p>
+          <span className="mail-empty-state__hint">
+            {t("New messages will appear here")}
+          </span>
         </div>
       );
     }
@@ -179,8 +200,10 @@ export function MailList({
   };
 
   return (
-    <Card className="inbox-card">
-      <div className="mail-list-header">
+    <section className="surface-panel inbox-card">
+      <div
+        className={`mail-list-header${hasAdditionalActions ? "" : " mail-list-header--compact"}`}
+      >
         <div className="mail-list-header__title">
           <MailIcon size={22} aria-hidden="true" />
           <h2>{t("Inbox")}</h2>
@@ -277,6 +300,6 @@ export function MailList({
         </div>
       </div>
       <div className="mail-list-body">{renderBody()}</div>
-    </Card>
+    </section>
   );
 }
