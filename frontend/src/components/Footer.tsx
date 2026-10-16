@@ -21,18 +21,7 @@ export function Footer() {
       </div>
 
       <nav className="site-footer__links" aria-label={t("Social links")}>
-        <a href="https://like.do" target="_blank" rel="noreferrer">
-          <img src="/likedo.svg" width="24" height="24" alt="LikeDo" />
-        </a>
-        <a href="https://attachready.com" target="_blank" rel="noreferrer">
-          <img
-            src="/attachready.png"
-            width="24"
-            height="24"
-            alt="AttachReady"
-          />
-        </a>
-        <a href="mailto:qa@naodeng.com.cn" aria-label="Email">
+        <a href="mailto:qa@naodeng.com.cn" aria-label={t("Email us")}>
           <MailIcon size={22} aria-hidden="true" />
         </a>
         <a href="https://twitter.com/inaodeng" target="_blank" rel="noreferrer">

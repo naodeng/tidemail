@@ -1,119 +1,84 @@
-// 这个文件内容直接从您的 _h.terms.tsx 迁移而来
+import { useTranslation } from "react-i18next";
+
+const termsSections: Array<{
+  title: string;
+  paragraphs: string[];
+  list?: string[];
+}> = [
+  {
+    title: "termsOfService.descriptionTitle",
+    paragraphs: ["termsOfService.descriptionBody"],
+  },
+  {
+    title: "termsOfService.restrictionsTitle",
+    paragraphs: [
+      "termsOfService.availabilityBody",
+      "termsOfService.copyrightBody",
+    ],
+  },
+  {
+    title: "termsOfService.responsibilitiesTitle",
+    paragraphs: [
+      "termsOfService.registrationBody",
+      "termsOfService.mailboxAccessBody",
+      "termsOfService.prohibitedActivitiesBody",
+    ],
+    list: [
+      "termsOfService.prohibitedActivityOne",
+      "termsOfService.prohibitedActivityTwo",
+      "termsOfService.prohibitedActivityThree",
+      "termsOfService.prohibitedActivityFour",
+    ],
+  },
+  {
+    title: "termsOfService.emailSendingTitle",
+    paragraphs: ["termsOfService.emailSendingBody"],
+  },
+  {
+    title: "termsOfService.warrantyTitle",
+    paragraphs: ["termsOfService.warrantyBody"],
+  },
+  {
+    title: "termsOfService.liabilityTitle",
+    paragraphs: ["termsOfService.liabilityBody"],
+  },
+  {
+    title: "termsOfService.modificationTitle",
+    paragraphs: ["termsOfService.modificationBody"],
+  },
+  {
+    title: "termsOfService.governingLawTitle",
+    paragraphs: ["termsOfService.governingLawBody"],
+  },
+];
+
 export function Terms() {
+  const { t } = useTranslation();
+
   return (
-    // 修复：移除 text-black 类，文本颜色将由父组件 InfoModal 控制
-    <div>
-      <div className="max-w-[1400px] ">
-        <p className="mt-8">
-          Welcome to tidemail! These Terms of Service ("Terms") govern your
-          access to and use of our website and services. By accessing or using
-          our services, you agree to be bound by these Terms. If you do not
-          agree to these Terms, please do not use our services.
-        </p>
-
-        <h2 className="mt-8 text-2xl font-bold" id="Collection of Information">
-          1. Description of Service
-        </h2>
-        <p className="mt-4">
-          tidemail is a minimalistic temporary email service that allows you to
-          obtain a temporary email address without disclosing any personal
-          information, ensuring the protection of your privacy. Our service
-          supports the selection of multiple domain names, providing you with
-          the convenience of using it in various scenarios. Additionally,
-          tidemail operates on the Cloudflare network, guaranteeing a super-fast
-          experience.
-        </p>
-
-        <h2 className="mt-8 text-2xl font-bold" id="Storage of Emails">
-          2. Usage Restrictions
-        </h2>
-        <p className="mt-4">
-          2.1 Availability: Please note that tidemail is not available in China
-          Mainland. We apologize for any inconvenience caused.
-        </p>
-        <p className="mt-4">
-          2.2 Copyright: All copyrights related to tidemail and its services
-          belong to their respective owners. You may not copy, reproduce,
-          distribute, modify, or create derivative works without the relevant
-          owner's permission.
-        </p>
-
-        <h2 className="mt-8 text-2xl font-bold" id="Deletion of Emails">
-          3. User Responsibilities
-        </h2>
-        <p className="mt-4">
-          3.1 Registration: You are not required to register or provide any
-          personal information to use tidemail. However, you are solely
-          responsible for maintaining the confidentiality of any temporary email
-          addresses generated through our service.
-        </p>
-        <p className="mt-4">
-          3.2 Prohibited Activities: While using tidemail, you agree not to
-          engage in any activities that may violate any applicable laws,
-          regulations, or these Terms. Prohibited activities include, but are
-          not limited to:
-        </p>
-        <ul className="mt-4">
-          <li>a) Sending spam or unsolicited emails. </li>
-          <li>
-            b) Interfering with or disrupting the operation of our services.
-          </li>
-          <li>
-            c) Attempting to gain unauthorized access to our systems or
-            networks.
-          </li>
-        </ul>
-
-        <h2 className="mt-8 text-2xl font-bold" id="Data Security">
-          4. Disclaimer of Warranty
-        </h2>
-        <p className="mt-4">
-          tidemail is provided on an "as is" and "as available" basis. We do not
-          warrant that our services will be uninterrupted, error-free, or
-          secure. Your use of tidemail is at your own risk, and we disclaim all
-          warranties, whether express or implied, including but not limited to
-          warranties of merchantability, fitness for a particular purpose, and
-          non-infringement.
-        </p>
-
-        <h2 className="mt-8 text-2xl font-bold" id="Third-Party Services">
-          5. Limitation of Liability
-        </h2>
-        <p className="mt-4">
-          To the maximum extent permitted by law, in no event shall tidemail or
-          its affiliates be liable for any indirect, incidental, special,
-          consequential, or punitive damages, including without limitation, loss
-          of profits, data, use, goodwill, or other intangible losses, resulting
-          from your access to or use of tidemail or any content or services
-          provided through tidemail.
-        </p>
-
-        <h2 className="mt-8 text-2xl font-bold" id="">
-          6. Modification of Terms
-        </h2>
-        <p className="mt-4">
-          We reserve the right to modify these Terms at any time, without prior
-          notice. Any changes to the Terms will be effective immediately upon
-          posting. Your continued use of tidemail after the posting of any
-          modified Terms constitutes your acceptance of such changes.
-        </p>
-
-        <h2 className="mt-8 text-2xl font-bold" id="Cookies">
-          7. Governing Law and Jurisdiction
-        </h2>
-        <p className="mt-4">
-          These Terms shall be governed by and construed in accordance with the
-          laws of the jurisdiction where tidemail is located. Any disputes
-          arising out of or in connection with these Terms shall be subject to
-          the exclusive jurisdiction of the courts in that jurisdiction.
-        </p>
-
-        <p className="mt-4">
-          If you have any questions or concerns regarding these Terms, please
-          contact us.
-        </p>
-        <p className="mt-8">Last updated: 2024-04-10</p>
-      </div>
-    </div>
+    <article className="legal-document">
+      <p className="legal-document__intro">{t("termsOfService.intro")}</p>
+      {termsSections.map(({ title, paragraphs, list }) => (
+        <section className="legal-document__section" key={title}>
+          <h2 className="mt-8 text-2xl font-bold">{t(title)}</h2>
+          {paragraphs.map((paragraph) => (
+            <p className="mt-4" key={paragraph}>
+              {t(paragraph)}
+            </p>
+          ))}
+          {list && (
+            <ul className="legal-document__list mt-4">
+              {list.map((item) => (
+                <li key={item}>{t(item)}</li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))}
+      <p className="mt-4">{t("termsOfService.contactBody")}</p>
+      <p className="legal-document__last-updated">
+        {t("Last updated")}: 2026-10-16
+      </p>
+    </article>
   );
 }

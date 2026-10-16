@@ -24,6 +24,7 @@ async function mockWorker(
     body: Record<string, unknown>;
   }> = [];
   let emailDeleted = false;
+  let failNextEmailRequest = false;
   let siteUnlocked = false;
 
   await page.addInitScript(() => {
@@ -89,6 +90,13 @@ async function mockWorker(
     }
 
     if (pathname === "/api/emails" && request.method() === "POST") {
+      if (failNextEmailRequest) {
+        failNextEmailRequest = false;
+        return route.fulfill({
+          status: 503,
+          json: { message: "Temporarily unavailable" },
+        });
+      }
       return route.fulfill({ json: emailDeleted ? [] : [inboxEmail] });
     }
 
@@ -117,7 +125,12 @@ async function mockWorker(
     return route.fulfill({ status: 404, json: { message: "Not mocked" } });
   });
 
-  return { sentMessages };
+  return {
+    sentMessages,
+    failNextEmailRequest: () => {
+      failNextEmailRequest = true;
+    },
+  };
 }
 
 async function openMailbox(page: Page, domain = "temp.example.net") {
@@ -151,6 +164,21 @@ test("creates a mailbox on a selected domain, reads and deletes a message", asyn
   await page.getByLabel("Test sender: Quarterly update").check();
   await page.getByRole("button", { name: "Delete selected" }).click();
   await expect(page.getByText("Waiting for emails...")).toBeVisible();
+});
+
+test("keeps cached emails visible when refreshing fails", async ({ page }) => {
+  const { failNextEmailRequest } = await mockWorker(page);
+  await page.goto("/");
+  await openMailbox(page);
+
+  const messageRow = page.getByRole("button", { name: /Quarterly update/ });
+  await expect(messageRow).toBeVisible();
+
+  failNextEmailRequest();
+  await page.getByRole("button", { name: "Refresh" }).click();
+
+  await expect(page.getByRole("alert")).toContainText("Failed to get emails");
+  await expect(messageRow).toBeVisible();
 });
 
 test("sends email with the mailbox bearer authorization", async ({ page }) => {
@@ -266,4 +294,45 @@ test("switches theme, follows the system, and keeps language choices to English 
   );
   await expect(page.getByRole("option", { name: "浅色" })).toBeVisible();
   await page.getByRole("option", { name: "跟随系统" }).click();
+});
+
+test("keeps the mailbox and long dialogs usable from phone to desktop widths", async ({
+  page,
+}) => {
+  await mockWorker(page);
+  await page.goto("/");
+  await openMailbox(page);
+
+  for (const [width, height] of [
+    [320, 700],
+    [390, 844],
+    [768, 1024],
+    [1024, 900],
+    [1440, 1000],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await expect
+      .poll(() => page.evaluate(() => document.documentElement.scrollWidth))
+      .toBeLessThanOrEqual(width);
+  }
+
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.getByRole("button", { name: "Send email" }).click();
+  const senderDialog = page.getByRole("dialog");
+  await expect(
+    senderDialog.getByRole("button", { name: "Send", exact: true }),
+  ).toBeInViewport();
+  await senderDialog.getByRole("button", { name: "Cancel" }).click();
+
+  await page.getByRole("button", { name: "Open navigation menu" }).click();
+  await page.getByRole("button", { name: "Privacy" }).last().click();
+  const privacyDialog = page.getByRole("dialog");
+  await expect(privacyDialog).toBeVisible();
+  await expect
+    .poll(() =>
+      privacyDialog.locator(".modal-scroll").evaluate((element) => {
+        return element.scrollHeight > element.clientHeight;
+      }),
+    )
+    .toBe(true);
 });

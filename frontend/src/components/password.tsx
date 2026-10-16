@@ -22,7 +22,7 @@ export function PasswordModal({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!password) {
-      toast.error(t("Password is required"));
+      toast.error(t("Password is required"), { position: "top-center" });
       return;
     }
     await onLogin(password);

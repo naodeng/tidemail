@@ -77,7 +77,7 @@ components:
 
 tidemail pairs a private, temporary mailbox with the calm visual language of Animal-Island-UI. Warm paper surfaces, bark-brown text, rounded controls, and a restrained island-teal accent make the inbox feel approachable while keeping message actions easy to scan.
 
-The interface favors familiar patterns over decoration: create an address, read and manage messages, then open secondary tasks in compact dialogs. The component library supplies the recurring shapes and states; project CSS handles page layout and responsive behavior.
+The interface favors familiar patterns over decoration: create an address, read and manage messages, then open secondary tasks in compact dialogs. The component library supplies recurring controls and states; project CSS handles page layout, responsive behavior, and theme-aware content surfaces.
 
 **Key Characteristics:**
 
@@ -93,6 +93,7 @@ The palette uses one clear teal accent against warm paper, cream, and brown neut
 ### Primary
 
 - **Island Teal** (`#19c8b9`): Links, focus rings, status icons, and selected accents.
+- **Accessible Teal** (`#076e65`, hover `#055a53`): Light-theme text links and focus rings where Island Teal would not provide enough contrast.
 
 ### Neutral
 
@@ -114,6 +115,7 @@ The dark palette is applied through Animal-Island-UI CSS variables when the root
 - Main text: `#f2eadc`; secondary text: `#c4b9a7`.
 - Primary teal: `#68d8ca`; light border: `#40382f`.
 - Keep the same hierarchy and spacing as light mode; avoid pure-black panels.
+- Use the `.surface-panel` token-backed surface for page content. Animal-Island-UI 2.2.1 hardcodes light colors in its modal, select, and input styles, so `frontend/src/index.css` maps those specific component surfaces to the active theme.
 
 The preference selector has three choices: **System default**, **Light**, and **Dark**. System default follows `prefers-color-scheme`; explicit choices persist in local storage.
 
@@ -131,13 +133,14 @@ The preference selector has three choices: **System default**, **Light**, and **
 - **Section** (800, 18px): Wordmark and inbox title.
 - **Title** (800, 20px): Site unlock and mailbox card headings.
 - **Body** (500, 14px, line-height 1.5715): Instructions, message metadata, and documentation.
+- **Empty-state lead** (800, 16px): The primary line in inbox empty and error states.
 - **Label** (600, 12px): Compact controls, status, and supporting metadata.
 
 **The Familiar Type Rule.** Keep interface text in the bundled Nunito/Noto Sans SC stack; reserve monospace for code examples only.
 
 ## Layout
 
-The desktop shell uses a centered 1280px maximum width. The home page pairs a 280–340px mailbox panel with a flexible inbox and a 20px gap. At 820px the mailbox and inbox stack, the header switches to its mobile menu, and modal form rows become single-column. At 560px page gutters reduce to 14px and list actions wrap. Use an 8/12/16/24px spacing rhythm.
+The desktop shell uses a centered 1280px maximum width. The home page pairs a 280–340px mailbox panel with a flexible inbox and a 20px gap. At 820px the mailbox and inbox stack and the header switches to its mobile menu. At 560px page gutters reduce to 14px, modal form rows become single-column, and list actions wrap left-aligned beneath the inbox title. Keep the title and refresh action on one line when refresh is the only action. Long modal forms scroll in the body while their primary and cancel actions stay visible in the footer. Use an 8/12/16/24px spacing rhythm.
 
 ## Elevation & Depth
 

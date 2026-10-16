@@ -67,6 +67,7 @@ export function SenderModal({
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : t("Failed to send email"),
+        { position: "top-center" },
       );
     } finally {
       setIsSending(false);
@@ -90,13 +91,25 @@ export function SenderModal({
           >
             {t("Cancel")}
           </Button>
+          {hasSender && (
+            <Button
+              type="primary"
+              size="small"
+              htmlType="submit"
+              form="sender-form"
+              disabled={isSending}
+              loading={isSending}
+            >
+              {isSending ? t("Sending...") : t("Send")}
+            </Button>
+          )}
         </div>
       }
       onClose={onClose}
     >
       <div className="modal-form-content">
         <p>{t("Forward only, no storage")}</p>
-        <form className="modal-form" onSubmit={handleSubmit}>
+        <form id="sender-form" className="modal-form" onSubmit={handleSubmit}>
           <div className="modal-form__row">
             <label className="form-field">
               {t("Sending email *")}
@@ -160,17 +173,7 @@ export function SenderModal({
             />
           </label>
 
-          {hasSender ? (
-            <Button
-              type="primary"
-              block
-              htmlType="submit"
-              disabled={isSending}
-              loading={isSending}
-            >
-              {isSending ? t("Sending...") : t("Send")}
-            </Button>
-          ) : (
+          {!hasSender && (
             <Tag variant="dashed" color="brown">
               {t("No sending service configured")}
             </Tag>

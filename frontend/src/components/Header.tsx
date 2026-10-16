@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "animal-island-ui";
 import { MailIcon, MenuIcon, SettingsIcon } from "naive-icons";
+import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { About } from "../pages/About.tsx";
@@ -38,6 +39,7 @@ export function Header() {
         type="text"
         size="small"
         onClick={() => {
+          toast.dismiss();
           setShowAboutModal(true);
           setShowMobileMenu(false);
         }}
@@ -48,6 +50,7 @@ export function Header() {
         type="text"
         size="small"
         onClick={() => {
+          toast.dismiss();
           setShowPrivacyModal(true);
           setShowMobileMenu(false);
         }}
@@ -58,6 +61,7 @@ export function Header() {
         type="text"
         size="small"
         onClick={() => {
+          toast.dismiss();
           setShowTermsModal(true);
           setShowMobileMenu(false);
         }}
@@ -108,6 +112,7 @@ export function Header() {
               aria-label={t("Settings")}
               aria-haspopup="dialog"
               onClick={() => {
+                toast.dismiss();
                 setShowMobileMenu(false);
                 setShowSettingsModal(true);
               }}

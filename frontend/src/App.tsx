@@ -1,8 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Card, Skeleton } from "animal-island-ui";
+import { Skeleton } from "animal-island-ui";
 import axios from "axios";
 import { lazy, useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { ConfigContext, AppConfig } from "./hooks/useConfig.ts";
 import { getUnlockStatus, unlockSite } from "./services/api.ts";
 import { SiteUnlock } from "./components/SiteUnlock.tsx";
@@ -15,12 +16,14 @@ const Home = lazy(() =>
 const queryClient = new QueryClient();
 
 export function LoadingScreen() {
+  const { t } = useTranslation();
+
   return (
-    <main className="app-loading" role="status" aria-label="Loading">
-      <Card className="app-loading-card">
+    <main className="app-loading" role="status" aria-label={t("Loading")}>
+      <section className="surface-panel app-loading-card">
         <Skeleton variant="paragraph" rows={3} />
-        <p>Loading tidemail…</p>
-      </Card>
+        <p>{t("Loading tidemail…")}</p>
+      </section>
     </main>
   );
 }
